@@ -18,7 +18,17 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddControllers();
 
 builder.Services.AddMudServices();
-builder.Services.AddScoped<IEmailService, MockEmailService>();
+// Use SmtpEmailService para envio real de e-mail
+// Use MockEmailService para testes sem enviar e-mail real
+var useRealEmail = builder.Configuration.GetValue<bool>("Email:Enabled") ?? false;
+if (useRealEmail)
+{
+    builder.Services.AddScoped<IEmailService, SmtpEmailService>();
+}
+else
+{
+    builder.Services.AddScoped<IEmailService, MockEmailService>();
+}
 builder.Services.AddScoped<IFornecedorService, FornecedorService>();
 builder.Services.AddScoped<IFuncionarioService, FuncionarioService>();
 builder.Services.AddScoped<IFileStorageService, FileStorageService>();
