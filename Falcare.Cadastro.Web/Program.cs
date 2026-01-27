@@ -20,7 +20,7 @@ builder.Services.AddControllers();
 builder.Services.AddMudServices();
 // Use SmtpEmailService para envio real de e-mail
 // Use MockEmailService para testes sem enviar e-mail real
-var useRealEmail = builder.Configuration.GetValue<bool>("Email:Enabled") ?? false;
+var useRealEmail = builder.Configuration.GetValue<bool?>("Email:Enabled") ?? false;
 if (useRealEmail)
 {
     builder.Services.AddScoped<IEmailService, SmtpEmailService>();
