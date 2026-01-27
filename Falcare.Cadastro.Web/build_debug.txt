@@ -1,0 +1,13 @@
+  Determinando os projetos a serem restaurados...
+  Todos os projetos estão atualizados para restauração.
+  Falcare.Cadastro.Core -> G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Core\bin\Debug\net9.0\Falcare.Cadastro.Core.dll
+  Falcare.Cadastro.Infra -> G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\bin\Debug\net9.0\Falcare.Cadastro.Infra.dll
+  Falcare.Cadastro.Web -> G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Web\bin\Debug\net9.0\Falcare.Cadastro.Web.dll
+
+Compilação com êxito.
+    0 Aviso(s)
+    0 Erro(s)
+
+Tempo Decorrido 00:00:02.09
+
+As atualizações de carga de trabalho estão disponíveis. Execute `dotnet workload list` para obter mais informações.

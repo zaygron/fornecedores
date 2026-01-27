@@ -1,0 +1,224 @@
+@page "/fornecedor/funcionarios/{FuncionarioId:int}/documentos"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@using System.IO
+@using Falcare.Cadastro.Core.Entities
+@using Falcare.Cadastro.Core.Enums
+@using Falcare.Cadastro.Core.Interfaces
+@using Microsoft.AspNetCore.Components.Forms
+@using MudBlazor
+@attribute [Authorize]
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IFornecedorService FornecedorService
+@inject IFuncionarioService FuncionarioService
+@inject IDocumentoService DocumentoService
+@inject ISnackbar Snackbar
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>Documentos do Funcionário</h3>
+    <MudButton Href="/fornecedor/funcionarios" Variant="Variant.Outlined" Color="Color.Secondary">Voltar</MudButton>
+</div>
+
+@if (loading)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+}
+else if (funcionario != null)
+{
+    <div class="card p-3 mb-4">
+        <h5>@funcionario.Nome</h5>
+        <p class="mb-0">Função: @funcionario.Cargo | CPF: @funcionario.CPF</p>
+    </div>
+
+    <MudTable Items="requiredDocuments" Hover="true">
+        <HeaderContent>
+            <MudTh>Documento</MudTh>
+            <MudTh>Status</MudTh>
+            <MudTh>Arquivo</MudTh>
+            <MudTh>Ações</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Documento">@context.Tipo.ToString()</MudTd>
+            <MudTd DataLabel="Status">
+                @if (IsUploaded(context.Tipo))
+                {
+                    <MudChip T="string" Color="Color.Success" Size="Size.Small">Enviado</MudChip>
+                }
+                else
+                {
+                    <MudChip T="string" Color="Color.Warning" Size="Size.Small">Pendente</MudChip>
+                }
+            </MudTd>
+            <MudTd DataLabel="Arquivo">
+                @if (IsUploaded(context.Tipo))
+                {
+                    var doc = GetUploadedDoc(context.Tipo);
+                    <a href="@doc.ArquivoPath" target="_blank">@doc.ArquivoNomeOriginal</a>
+                }
+                 else
+                {
+                    <span>-</span>
+                }
+            </MudTd>
+            <MudTd DataLabel="Ações">
+                 @if (IsUploaded(context.Tipo))
+                {
+                    var doc = GetUploadedDoc(context.Tipo);
+                     <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(() => DeleteDocument(doc))" Size="Size.Small" />
+                }
+                else
+                {
+                    <InputFile OnChange="@(e => UploadFile(e, context.Tipo))" class="form-control form-control-sm" />
+                }
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+}
+
+@code {
+    [Parameter] public int FuncionarioId { get; set; }
+
+    private Funcionario? funcionario;
+    private List<Documento> uploadedDocs = new();
+    private List<DocRequirement> requiredDocuments = new();
+    private bool loading = true;
+    private string currentUserId = "";
+
+    private class DocRequirement
+    {
+        public TipoDocumento Tipo { get; set; }
+        public bool Required { get; set; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try 
+        {
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+            currentUserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
+
+            if (string.IsNullOrEmpty(currentUserId))
+            {
+                Navigation.NavigateTo("/account/login");
+                return;
+            }
+
+            funcionario = await FuncionarioService.GetByIdAsync(FuncionarioId);
+            if (funcionario == null)
+            {
+                Snackbar.Add("Funcionário não encontrado", Severity.Error);
+                Navigation.NavigateTo("/fornecedor/funcionarios");
+                return;
+            }
+
+            await LoadDocuments();
+            DetermineRequirements();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro ao carregar: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    private async Task LoadDocuments()
+    {
+        uploadedDocs = await DocumentoService.GetDocumentosFuncionarioAsync(FuncionarioId);
+    }
+
+    private void DetermineRequirements()
+    {
+        requiredDocuments.Clear();
+        
+        requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.RG, Required = true });
+        requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.CPF, Required = true });
+        requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.CarteiraTrabalho, Required = true });
+        requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.ASO, Required = true });
+        requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.ContratoTrabalho, Required = true });
+
+        if (funcionario!.TrabalhaComEletricidade)
+        {
+            requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.NR10, Required = true });
+            requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.CertificadoEletrica, Required = true });
+        }
+
+        if (funcionario.TrabalhoAltura)
+        {
+            requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.NR35, Required = true });
+        }
+       
+       if (funcionario.MovimentacaoCarga)
+        {
+            requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.NR11, Required = true });
+        }
+
+        if (funcionario.CaldeirasVasosPressao)
+        {
+             requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.NR13, Required = true });
+        }
+
+         requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.Outros, Required = false });
+    }
+
+    private bool IsUploaded(TipoDocumento tipo)
+    {
+        if (tipo == TipoDocumento.Outros) return false;
+        return uploadedDocs.Any(d => d.Tipo == tipo);
+    }
+
+    private Documento GetUploadedDoc(TipoDocumento tipo) => uploadedDocs.First(d => d.Tipo == tipo);
+
+    private async Task UploadFile(InputFileChangeEventArgs e, TipoDocumento tipo)
+    {
+        try
+        {
+            var file = e.File;
+            long maxFileSize = 10 * 1024 * 1024; 
+
+            if (file.Size > maxFileSize)
+            {
+                Snackbar.Add("Arquivo muito grande. Max 10MB.", Severity.Warning);
+                return;
+            }
+
+            // Converter browser file p/ stream
+            using var stream = file.OpenReadStream(maxFileSize);
+            
+            // Necessário copiar p/ MemoryStream se o serviço for assíncrono e o stream fechar, mas aqui vamos passar direto se for salvo imediatamente.
+            // P/ segurança em Blazor Server, melhor copiar.
+            using var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            memoryStream.Position = 0;
+
+            await DocumentoService.UploadDocumentoFuncionarioAsync(FuncionarioId, tipo, memoryStream, file.Name, file.ContentType, currentUserId);
+            
+            Snackbar.Add("Upload realizado com sucesso!", Severity.Success);
+            await LoadDocuments();
+        }
+        catch (Exception ex)
+        {
+             Snackbar.Add($"Erro no upload: {ex.Message}", Severity.Error);
+        }
+    }
+
+    private async Task DeleteDocument(Documento doc)
+    {
+        try
+        {
+            await DocumentoService.DeleteDocumentoAsync(doc.Id);
+            Snackbar.Add("Documento removido.", Severity.Success);
+            await LoadDocuments();
+        }
+        catch (Exception ex)
+        {
+             Snackbar.Add($"Erro ao remover: {ex.Message}", Severity.Error);
+        }
+    }
+}

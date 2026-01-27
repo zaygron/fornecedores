@@ -1,0 +1,15 @@
+  Determinando os projetos a serem restaurados...
+  Todos os projetos estão atualizados para restauração.
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Core\Interfaces\IDocumentoService.cs(3,28): error CS0234: O nome de tipo ou namespace "Components" não existe no namespace "Microsoft.AspNetCore" (você está sem uma referência de assembly?) [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Core\Falcare.Cadastro.Core.csproj]
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Core\Interfaces\IDocumentoService.cs(9,92): error CS0246: O nome do tipo ou do namespace "IBrowserFile" não pode ser encontrado (está faltando uma diretiva using ou uma referência de assembly?) [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Core\Falcare.Cadastro.Core.csproj]
+
+FALHA da compilação.
+
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Core\Interfaces\IDocumentoService.cs(3,28): error CS0234: O nome de tipo ou namespace "Components" não existe no namespace "Microsoft.AspNetCore" (você está sem uma referência de assembly?) [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Core\Falcare.Cadastro.Core.csproj]
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Core\Interfaces\IDocumentoService.cs(9,92): error CS0246: O nome do tipo ou do namespace "IBrowserFile" não pode ser encontrado (está faltando uma diretiva using ou uma referência de assembly?) [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Core\Falcare.Cadastro.Core.csproj]
+    0 Aviso(s)
+    2 Erro(s)
+
+Tempo Decorrido 00:00:01.68
+
+As atualizações de carga de trabalho estão disponíveis. Execute `dotnet workload list` para obter mais informações.

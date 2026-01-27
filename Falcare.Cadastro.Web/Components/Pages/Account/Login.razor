@@ -1,0 +1,29 @@
+@page "/login"
+@layout SimpleLayout
+
+<MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center justify-center mud-width-full mud-height-full">
+    <MudPaper Elevation="25" Class="pa-8" Width="100%" MaxWidth="400px">
+        <MudText Typo="Typo.h4" GutterBottom="true" Align="Align.Center">Falcare Login</MudText>
+        
+        @if (!string.IsNullOrEmpty(Error))
+        {
+            <MudAlert Severity="Severity.Error" Class="mb-4">Usuário ou senha inválidos.</MudAlert>
+        }
+
+        <form action="/account/login" method="post">
+            <AntiforgeryToken />
+            <MudTextField T="string" Name="email" Label="Email" Variant="Variant.Outlined" Class="mb-3" Required="true" />
+            <MudTextField T="string" Name="password" Label="Senha" Variant="Variant.Outlined" InputType="InputType.Password" Class="mb-3" Required="true" />
+            
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit" Size="Size.Large" FullWidth="true">Entrar</MudButton>
+        </form>
+         <MudText Typo="Typo.body2" Align="Align.Center" Class="mt-4">
+            <MudLink Href="#">Esqueceu a senha?</MudLink>
+        </MudText>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    [SupplyParameterFromQuery]
+    public string? Error { get; set; }
+}

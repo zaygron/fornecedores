@@ -1,0 +1,100 @@
+@page "/admin/fornecedores"
+@using Microsoft.AspNetCore.Authorization
+@using Falcare.Cadastro.Core.Entities
+@using Falcare.Cadastro.Core.Enums
+@using Falcare.Cadastro.Core.Interfaces
+@using MudBlazor
+@attribute [Authorize(Roles = "Admin")]
+@inject IFornecedorService FornecedorService
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<MudText Typo="Typo.h4" GutterBottom="true" Color="Color.Primary">Gestão de Fornecedores</MudText>
+<MudText Typo="Typo.subtitle1" Class="mb-4">Visualize e gerencie os cadastros da plataforma.</MudText>
+
+<MudPaper Elevation="2" Class="pa-4 glass-card">
+    <MudTable Items="@fornecedores" Hover="true" Loading="@loading" Filter="new Func<Fornecedor,bool>(FilterFunc1)" Striped="true">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Fornecedores Cadastrados</MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="searchString1" Placeholder="Buscar por nome, CNPJ ou código..." Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Código</MudTh>
+            <MudTh>Empresa</MudTh>
+            <MudTh>CNPJ</MudTh>
+            <MudTh>Data Cadastro</MudTh>
+            <MudTh>Status</MudTh>
+            <MudTh Style="text-align:right">Ações</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Código"><MudChip T="string" Variant="Variant.Text" Size="Size.Small">@context.CodigoInterno</MudChip></MudTd>
+            <MudTd DataLabel="Empresa">
+                <MudText Typo="Typo.body1" Style="font-weight: 500;">@context.NomeEmpresa</MudText>
+                <MudText Typo="Typo.caption">@context.EmailContato</MudText>
+            </MudTd>
+            <MudTd DataLabel="CNPJ">@context.CNPJ</MudTd>
+            <MudTd DataLabel="Data Cadastro">@context.DataCadastro.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</MudTd>
+            <MudTd DataLabel="Status">
+                <MudChip T="string" Color="@GetStatusColor(context.Status)" Size="Size.Small" Variant="Variant.Filled">@context.Status.ToString()</MudChip>
+            </MudTd>
+            <MudTd DataLabel="Ações" Style="text-align:right">
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="@(() => OpenDetails(context.Id))">Detalhes</MudButton>
+            </MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
+</MudPaper>
+
+@code {
+    private List<Fornecedor> fornecedores = new();
+    private bool loading = true;
+    private string searchString1 = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        loading = true;
+        fornecedores = await FornecedorService.GetAllAsync();
+        loading = false;
+    }
+
+    private Color GetStatusColor(StatusFornecedor status)
+    {
+        return status switch
+        {
+            StatusFornecedor.Pendente => Color.Warning,
+            StatusFornecedor.EmAnalise => Color.Info,
+            StatusFornecedor.Aprovado => Color.Success,
+            StatusFornecedor.Reprovado => Color.Error,
+            StatusFornecedor.Bloqueado => Color.Dark,
+            _ => Color.Default
+        };
+    }
+
+    private bool FilterFunc1(Fornecedor element) => FilterFunc(element, searchString1);
+
+    private bool FilterFunc(Fornecedor element, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.NomeEmpresa.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.CNPJ.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.CodigoInterno != null && element.CodigoInterno.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+    }
+
+    private void OpenDetails(int id)
+    {
+        Navigation.NavigateTo($"/admin/fornecedores/{id}");
+    }
+}

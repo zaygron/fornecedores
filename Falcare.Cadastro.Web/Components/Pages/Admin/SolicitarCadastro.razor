@@ -1,0 +1,68 @@
+@page "/admin/solicitar-cadastro"
+@using Falcare.Cadastro.Core.Interfaces
+@inject IFornecedorService FornecedorService
+@inject ISnackbar Snackbar
+@rendermode InteractiveServer
+
+<MudText Typo="Typo.h4" GutterBottom="true">Solicitar Cadastro de Fornecedor</MudText>
+
+<MudPaper Class="pa-4" MaxWidth="600px">
+    <MudForm @ref="form" @bind-IsValid="@success">
+        <MudTextField T="string" Label="CNPJ" @bind-Value="cnpj" Required="true" RequiredError="CNPJ é obrigatório" Mask="@(new PatternMask("00.000.000/0000-00"))" />
+        <MudTextField T="string" Label="Nome da Empresa" @bind-Value="nomeEmpresa" Required="true" RequiredError="Nome é obrigatório" />
+        <MudTextField T="string" Label="E-mail de Contato" @bind-Value="email" Required="true" RequiredError="E-mail é obrigatório" InputType="InputType.Email" />
+        
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" Class="mt-4" OnClick="Solicitar">Solicitar Cadastro</MudButton>
+    </MudForm>
+</MudPaper>
+
+
+@if (!string.IsNullOrEmpty(lastInviteLink))
+{
+    <MudAlert Severity="Severity.Info" Class="mt-4" Variant="Variant.Filled">
+        <MudText><b>Link de Convite Gerado (Ambiente de Teste):</b></MudText>
+        <MudLink Href="@lastInviteLink" Target="_blank" Color="Color.Inherit" Underline="Underline.Always">
+            @lastInviteLink
+        </MudLink>
+        <MudText Typo="Typo.caption" Class="d-block mt-1">Empresa: @lastFornecedorName</MudText>
+    </MudAlert>
+}
+
+@code {
+    MudForm form = default!;
+    bool success;
+    string cnpj = string.Empty;
+    string nomeEmpresa = string.Empty;
+    string email = string.Empty;
+    
+    // Dev helpers
+    string? lastInviteLink;
+    string? lastFornecedorName;
+
+    private async Task Solicitar()
+    {
+        try
+        {
+            await form.Validate();
+            if(!form.IsValid) return;
+
+            var fornecedor = await FornecedorService.CreateDraftAsync(nomeEmpresa, cnpj, email);
+            var inviteLink = await FornecedorService.SendInvitationAsync(fornecedor.Id);
+            
+            Snackbar.Add($"Convite enviado! Link (Dev): {inviteLink}", Severity.Success);
+            
+            // Show link on screen for copy-paste
+            lastInviteLink = inviteLink;
+            lastFornecedorName = nomeEmpresa;
+            
+            // Clear form
+            cnpj = "";
+            nomeEmpresa = "";
+            email = "";
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro ao solicitar: {ex.Message}", Severity.Error);
+        }
+    }
+}

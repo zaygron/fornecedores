@@ -1,0 +1,163 @@
+@page "/admin/fornecedores/{Id:int}"
+@using Microsoft.AspNetCore.Authorization
+@using Falcare.Cadastro.Core.Entities
+@using Falcare.Cadastro.Core.Enums
+@using Falcare.Cadastro.Core.Interfaces
+@using MudBlazor
+@attribute [Authorize(Roles = "Admin")]
+@inject IFornecedorService FornecedorService
+@inject ISnackbar Snackbar
+@inject NavigationManager Navigation
+@inject IDialogService DialogService
+@inject IDocumentoService DocumentoService
+@rendermode InteractiveServer
+
+@if (loading)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Class="align-self-center" />
+}
+else if (fornecedor == null)
+{
+    <MudAlert Severity="Severity.Error">Fornecedor não encontrado.</MudAlert>
+    <MudButton StartIcon="@Icons.Material.Filled.ArrowBack" Href="/admin/fornecedores">Voltar</MudButton>
+}
+else
+{
+    <div class="d-flex justify-space-between align-center mb-4">
+        <div>
+            <MudText Typo="Typo.h4">@fornecedor.NomeEmpresa</MudText>
+            <MudText Typo="Typo.subtitle1" Class="mud-text-secondary">@fornecedor.CodigoInterno - @fornecedor.CNPJ</MudText>
+        </div>
+        <div class="d-flex gap-2">
+            <MudChip T="string" Color="@GetStatusColor(fornecedor.Status)" Variant="Variant.Filled" Size="Size.Large" Class="mr-4">@fornecedor.Status</MudChip>
+            
+            @if (fornecedor.Status != StatusFornecedor.Aprovado)
+            {
+                <MudButton Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.Check" OnClick="Aprovar">Aprovar Cadastro</MudButton>
+            }
+            @if (fornecedor.Status != StatusFornecedor.Reprovado)
+            {
+                <MudButton Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.Close" OnClick="Reprovar">Reprovar</MudButton>
+            }
+        </div>
+    </div>
+
+    <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+        <MudTabPanel Text="Dados da Empresa">
+            <MudGrid>
+                <MudItem xs="12" sm="6">
+                    <MudPaper Class="pa-4" Elevation="0" Outlined="true">
+                        <MudText Typo="Typo.subtitle2" Color="Color.Primary">Dados Gerais</MudText>
+                        <MudDivider Class="my-2"/>
+                        <MudList T="string" Dense="true" ReadOnly="true">
+                            <MudListItem Text="@($"Razão Social: {fornecedor.NomeEmpresa}")" />
+                            <MudListItem Text="@($"Fantasia: {fornecedor.NomeFantasia}")" />
+                            <MudListItem Text="@($"CNPJ: {fornecedor.CNPJ}")" />
+                            <MudListItem Text="@($"Inscrição Estadual: {fornecedor.InscricaoEstadual}")" />
+                        </MudList>
+                    </MudPaper>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                     <MudPaper Class="pa-4" Elevation="0" Outlined="true">
+                        <MudText Typo="Typo.subtitle2" Color="Color.Primary">Contato</MudText>
+                        <MudDivider Class="my-2"/>
+                        <MudList T="string" Dense="true" ReadOnly="true">
+                            <MudListItem Text="@($"Nome: {fornecedor.NomeContato}")" Icon="@Icons.Material.Filled.Person" />
+                            <MudListItem Text="@($"Email: {fornecedor.EmailContato}")" Icon="@Icons.Material.Filled.Email" />
+                            <MudListItem Text="@($"Telefone: {fornecedor.Telefone}")" Icon="@Icons.Material.Filled.Phone" />
+                            <MudListItem Text="@($"Celular: {fornecedor.Celular}")" Icon="@Icons.Material.Filled.Smartphone" />
+                        </MudList>
+                    </MudPaper>
+                </MudItem>
+                 <MudItem xs="12">
+                     <MudPaper Class="pa-4" Elevation="0" Outlined="true">
+                        <MudText Typo="Typo.subtitle2" Color="Color.Primary">Endereço</MudText>
+                        <MudDivider Class="my-2"/>
+                        <MudText>@($"{fornecedor.Endereco}, {fornecedor.Complemento} - {fornecedor.Bairro}")</MudText>
+                        <MudText>@($"{fornecedor.Cidade} / {fornecedor.Estado} - CEP: {fornecedor.CEP}")</MudText>
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+        </MudTabPanel>
+        
+        <MudTabPanel Text="Funcionários e Documentos">
+            <MudText Typo="Typo.h6" GutterBottom="true">Equipe Cadastrada (@(fornecedor.Funcionarios?.Count ?? 0))</MudText>
+            
+            @if (fornecedor.Funcionarios != null && fornecedor.Funcionarios.Any())
+            {
+                <MudTable Items="@fornecedor.Funcionarios" Hover="true" Striped="true" Elevation="0">
+                    <HeaderContent>
+                        <MudTh>Nome</MudTh>
+                        <MudTh>CPF</MudTh>
+                        <MudTh>Função</MudTh>
+                        <MudTh>Docs</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd>@context.Nome</MudTd>
+                        <MudTd>@context.CPF</MudTd>
+                        <MudTd>@context.Cargo</MudTd>
+                         <MudTd>
+                              <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Info" StartIcon="@Icons.Material.Filled.FolderOpen" Href="@($"/admin/funcionarios/{context.Id}/documentos")">Ver Docs</MudButton>
+                          </MudTd>
+                    </RowTemplate>
+                </MudTable>
+            }
+            else
+            {
+                <MudAlert Severity="Severity.Info">Nenhum fucionário cadastrado.</MudAlert>
+            }
+        </MudTabPanel>
+        
+        <MudTabPanel Text="Histórico">
+            <MudText>Histórico de aprovações será implementado aqui.</MudText>
+        </MudTabPanel>
+    </MudTabs>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+    
+    private Fornecedor? fornecedor;
+    private bool loading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        loading = true;
+        fornecedor = await FornecedorService.GetByIdAsync(Id);
+        loading = false;
+    }
+
+    private Color GetStatusColor(StatusFornecedor status)
+    {
+         return status switch
+        {
+            StatusFornecedor.Pendente => Color.Warning,
+            StatusFornecedor.EmAnalise => Color.Info,
+            StatusFornecedor.Aprovado => Color.Success,
+            StatusFornecedor.Reprovado => Color.Error,
+            StatusFornecedor.Bloqueado => Color.Dark,
+            _ => Color.Default
+        };
+    }
+
+    private async Task Aprovar()
+    {
+        if (fornecedor == null) return;
+        fornecedor.Status = StatusFornecedor.Aprovado;
+        await FornecedorService.UpdateAsync(fornecedor);
+        Snackbar.Add("Fornecedor APROVADO com sucesso!", Severity.Success);
+    }
+
+    private async Task Reprovar()
+    {
+        if (fornecedor == null) return;
+        fornecedor.Status = StatusFornecedor.Reprovado;
+        await FornecedorService.UpdateAsync(fornecedor);
+        Snackbar.Add("Fornecedor REPROVADO.", Severity.Error);
+    }
+}

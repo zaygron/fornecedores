@@ -1,0 +1,88 @@
+@page "/definir-senha"
+@using Microsoft.AspNetCore.Identity
+@using Falcare.Cadastro.Core.Entities
+@inject UserManager<AppUser> UserManager
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+@rendermode InteractiveServer
+
+<MudContainer MaxWidth="MaxWidth.Small" Class="mt-16">
+    <MudPaper Class="pa-4">
+        <MudText Typo="Typo.h5" Align="Align.Center" GutterBottom="true">Definir Senha</MudText>
+        <MudText Typo="Typo.body2" Align="Align.Center">Defina sua senha para acessar o sistema Falcare</MudText>
+        
+        <MudForm @ref="form" @bind-IsValid="@success">
+            <MudTextField T="string" Label="Nova Senha" @bind-Value="password" InputType="InputType.Password" Required="true" Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))"/>
+            <MudTextField T="string" Label="Confirmar Senha" @bind-Value="confirmPassword" InputType="InputType.Password" Required="true" Validation="@(new Func<string, string>(PasswordMatch))"/>
+
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-4" OnClick="SetPassword" FullWidth="true">Definir Senha e Entrar</MudButton>
+        </MudForm>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    [SupplyParameterFromQuery]
+    public string? UserId { get; set; }
+
+    [SupplyParameterFromQuery]
+    public string? Token { get; set; }
+
+    MudForm form;
+    bool success;
+    string password;
+    string confirmPassword;
+
+    private IEnumerable<string> PasswordStrength(string pw)
+    {
+        if (string.IsNullOrWhiteSpace(pw))
+        {
+            yield return "Senha é obrigatória";
+            yield break;
+        }
+        if (pw.Length < 6)
+            yield return "A senha deve ter pelo menos 6 caracteres";
+    }
+
+    private string PasswordMatch(string arg)
+    {
+        if (password != arg)
+            return "As senhas não conferem";
+        return null;
+    }
+
+    private async Task SetPassword()
+    {
+        if (string.IsNullOrEmpty(UserId) || string.IsNullOrEmpty(Token))
+        {
+            Snackbar.Add("Link inválido ou expirado.", Severity.Error);
+            return;
+        }
+
+        // Defensive fix for token encoding
+        Token = Token.Replace(" ", "+");
+
+        var user = await UserManager.FindByIdAsync(UserId);
+        if (user == null)
+        {
+            Snackbar.Add("Usuário não encontrado.", Severity.Error);
+            return;
+        }
+
+        var result = await UserManager.ResetPasswordAsync(user, Token, password);
+        if (result.Succeeded)
+        {
+            Snackbar.Add("Senha definida com sucesso! Redirecionando...", Severity.Success);
+            // In a real scenario, we might want to sign the user in directly or redirect to login.
+            // Since this is Blazor Server, standard Identity login usually requires a POST to a razor page or controller.
+            // For now, let's redirect to a login page (which we haven't built yet) or home.
+            Navigation.NavigateTo("/login"); 
+        }
+        else
+        {
+            foreach (var error in result.Errors)
+            {
+                Snackbar.Add(error.Description, Severity.Error);
+            }
+        }
+    }
+}

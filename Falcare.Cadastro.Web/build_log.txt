@@ -1,0 +1,26 @@
+  Determinando os projetos a serem restaurados...
+  Todos os projetos estão atualizados para restauração.
+  Falcare.Cadastro.Core -> G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Core\bin\Debug\net9.0\Falcare.Cadastro.Core.dll
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Services\FornecedorService.cs(20,9): error CS0103: O nome "_userManager" não existe no contexto atual [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Falcare.Cadastro.Infra.csproj]
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Services\FornecedorService.cs(21,9): error CS0103: O nome "_emailService" não existe no contexto atual [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Falcare.Cadastro.Infra.csproj]
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Services\FornecedorService.cs(55,34): error CS0103: O nome "_userManager" não existe no contexto atual [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Falcare.Cadastro.Infra.csproj]
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Services\FornecedorService.cs(59,32): error CS0103: O nome "_userManager" não existe no contexto atual [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Falcare.Cadastro.Infra.csproj]
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Services\FornecedorService.cs(62,19): error CS0103: O nome "_userManager" não existe no contexto atual [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Falcare.Cadastro.Infra.csproj]
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Services\FornecedorService.cs(72,27): error CS0103: O nome "_userManager" não existe no contexto atual [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Falcare.Cadastro.Infra.csproj]
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Services\FornecedorService.cs(76,15): error CS0103: O nome "_emailService" não existe no contexto atual [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Falcare.Cadastro.Infra.csproj]
+
+FALHA da compilação.
+
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Services\FornecedorService.cs(20,9): error CS0103: O nome "_userManager" não existe no contexto atual [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Falcare.Cadastro.Infra.csproj]
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Services\FornecedorService.cs(21,9): error CS0103: O nome "_emailService" não existe no contexto atual [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Falcare.Cadastro.Infra.csproj]
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Services\FornecedorService.cs(55,34): error CS0103: O nome "_userManager" não existe no contexto atual [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Falcare.Cadastro.Infra.csproj]
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Services\FornecedorService.cs(59,32): error CS0103: O nome "_userManager" não existe no contexto atual [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Falcare.Cadastro.Infra.csproj]
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Services\FornecedorService.cs(62,19): error CS0103: O nome "_userManager" não existe no contexto atual [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Falcare.Cadastro.Infra.csproj]
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Services\FornecedorService.cs(72,27): error CS0103: O nome "_userManager" não existe no contexto atual [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Falcare.Cadastro.Infra.csproj]
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Services\FornecedorService.cs(76,15): error CS0103: O nome "_emailService" não existe no contexto atual [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\Falcare.Cadastro.Infra.csproj]
+    0 Aviso(s)
+    7 Erro(s)
+
+Tempo Decorrido 00:00:02.35
+
+As atualizações de carga de trabalho estão disponíveis. Execute `dotnet workload list` para obter mais informações.

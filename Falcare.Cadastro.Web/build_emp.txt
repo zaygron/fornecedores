@@ -1,0 +1,19 @@
+  Determinando os projetos a serem restaurados...
+  Todos os projetos estão atualizados para restauração.
+  Falcare.Cadastro.Core -> G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Core\bin\Debug\net9.0\Falcare.Cadastro.Core.dll
+  Falcare.Cadastro.Infra -> G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\bin\Debug\net9.0\Falcare.Cadastro.Infra.dll
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Web\Components\Routes.razor(1,1): warning RZ10012: Found markup element with unexpected name 'CascadingAuthenticationState'. If this is intended to be a component, add a @using directive for its namespace. [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Web\Falcare.Cadastro.Web.csproj]
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Web\Components\Pages\Fornecedor\FuncionarioDialog.razor(22,26): error CS0246: O nome do tipo ou do namespace "MudDialogInstance" não pode ser encontrado (está faltando uma diretiva using ou uma referência de assembly?) [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Web\Falcare.Cadastro.Web.csproj]
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Web\Components\Pages\Fornecedor\Funcionarios.razor(7,9): error CS0246: O nome do tipo ou do namespace "AuthenticationStateProvider" não pode ser encontrado (está faltando uma diretiva using ou uma referência de assembly?) [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Web\Falcare.Cadastro.Web.csproj]
+
+FALHA da compilação.
+
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Web\Components\Routes.razor(1,1): warning RZ10012: Found markup element with unexpected name 'CascadingAuthenticationState'. If this is intended to be a component, add a @using directive for its namespace. [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Web\Falcare.Cadastro.Web.csproj]
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Web\Components\Pages\Fornecedor\FuncionarioDialog.razor(22,26): error CS0246: O nome do tipo ou do namespace "MudDialogInstance" não pode ser encontrado (está faltando uma diretiva using ou uma referência de assembly?) [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Web\Falcare.Cadastro.Web.csproj]
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Web\Components\Pages\Fornecedor\Funcionarios.razor(7,9): error CS0246: O nome do tipo ou do namespace "AuthenticationStateProvider" não pode ser encontrado (está faltando uma diretiva using ou uma referência de assembly?) [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Web\Falcare.Cadastro.Web.csproj]
+    1 Aviso(s)
+    2 Erro(s)
+
+Tempo Decorrido 00:00:02.17
+
+As atualizações de carga de trabalho estão disponíveis. Execute `dotnet workload list` para obter mais informações.

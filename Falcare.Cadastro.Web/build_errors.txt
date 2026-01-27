@@ -1,0 +1,9 @@
+G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Web\Components\Pages\Fornecedor\FuncionarioForm.razor(9,9): error CS0246: O nome do tipo ou do namespace "AuthenticationStateProvider" não pode ser encontrado (está faltando uma diretiva using ou uma referência de assembly?) [G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Web\Falcare.Cadastro.Web.csproj]
+
+FALHA da compilação.
+    2 Aviso(s)
+    1 Erro(s)
+
+Tempo Decorrido 00:00:09.58
+
+As atualizações de carga de trabalho estão disponíveis. Execute `dotnet workload list` para obter mais informações.

@@ -1,0 +1,180 @@
+@page "/admin/funcionarios/{FuncionarioId:int}/documentos"
+@using Microsoft.AspNetCore.Authorization
+@using Falcare.Cadastro.Core.Entities
+@using Falcare.Cadastro.Core.Enums
+@using Falcare.Cadastro.Core.Interfaces
+@using MudBlazor
+@attribute [Authorize(Roles = "Admin")]
+@inject IFuncionarioService FuncionarioService
+@inject IDocumentoService DocumentoService
+@inject ISnackbar Snackbar
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<div class="d-flex justify-space-between align-center mb-4">
+    <MudText Typo="Typo.h5">Documentos do Funcionário</MudText>
+    <MudButton OnClick="GoBack" Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Filled.ArrowBack">Voltar</MudButton>
+</div>
+
+@if (loading)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Class="align-self-center" />
+}
+else if (funcionario != null)
+{
+    <MudPaper Class="pa-4 mb-4" Elevation="3">
+        <MudText Typo="Typo.h6">@funcionario.Nome</MudText>
+        <MudText Typo="Typo.body2">Função: @funcionario.Cargo | CPF: @funcionario.CPF</MudText>
+        <MudText Typo="Typo.body2" Class="mt-1"><b>Empresa:</b> @funcionario.Fornecedor?.NomeEmpresa</MudText>
+    </MudPaper>
+
+    <MudTable Items="requiredDocuments" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="3">
+        <HeaderContent>
+            <MudTh>Documento</MudTh>
+            <MudTh>Status</MudTh>
+            <MudTh>Arquivo</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Documento">@context.Tipo.ToString()</MudTd>
+            <MudTd DataLabel="Status">
+                @if (IsUploaded(context.Tipo))
+                {
+                    <MudChip T="string" Color="Color.Success" Size="Size.Small">Enviado</MudChip>
+                }
+                else if (context.Required)
+                {
+                    <MudChip T="string" Color="Color.Error" Size="Size.Small">Pendente</MudChip>
+                }
+                else
+                {
+                     <MudChip T="string" Color="Color.Default" Size="Size.Small">Opcional</MudChip>
+                }
+            </MudTd>
+            <MudTd DataLabel="Arquivo">
+                @if (IsUploaded(context.Tipo))
+                {
+                    var doc = GetUploadedDoc(context.Tipo);
+                    <MudLink Href="@GetDownloadLink(doc)" Target="_blank" Color="Color.Primary" Underline="Underline.Always">
+                        @doc.ArquivoNomeOriginal
+                    </MudLink>
+                }
+                 else
+                {
+                    <MudText Typo="Typo.caption" Class="mud-text-secondary">-</MudText>
+                }
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+    
+    @if(uploadedDocs.Any(d => d.Tipo == TipoDocumento.Outros))
+    {
+         <MudText Typo="Typo.h6" Class="mt-4 mb-2">Outros Documentos</MudText>
+         <MudList T="string">
+             @foreach(var doc in uploadedDocs.Where(d => d.Tipo == TipoDocumento.Outros))
+             {
+                 <MudListItem Icon="@Icons.Material.Filled.AttachFile">
+                     <a href="@GetDownloadLink(doc)" target="_blank">@doc.ArquivoNomeOriginal</a>
+                 </MudListItem>
+             }
+         </MudList>
+    }
+}
+
+@code {
+    [Parameter] public int FuncionarioId { get; set; }
+
+    private Funcionario? funcionario;
+    private List<Documento> uploadedDocs = new();
+    private List<DocRequirement> requiredDocuments = new();
+    private bool loading = true;
+
+    private class DocRequirement
+    {
+        public TipoDocumento Tipo { get; set; }
+        public bool Required { get; set; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        loading = true;
+        try
+        {
+            // Include Fornecedor to link back correctly
+            funcionario = await FuncionarioService.GetByIdAsync(FuncionarioId);
+            if (funcionario == null)
+            {
+                Snackbar.Add("Funcionário não encontrado", Severity.Error);
+                return;
+            }
+
+            uploadedDocs = await DocumentoService.GetDocumentosFuncionarioAsync(FuncionarioId);
+            DetermineRequirements();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro ao carregar dados: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    private void DetermineRequirements()
+    {
+        requiredDocuments.Clear();
+        // Same logic as supplier view
+        requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.RG, Required = true });
+        requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.CPF, Required = true });
+        requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.CarteiraTrabalho, Required = true });
+        requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.ASO, Required = true });
+        requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.ContratoTrabalho, Required = true });
+
+        if (funcionario!.TrabalhaComEletricidade)
+        {
+            requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.NR10, Required = true });
+            requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.CertificadoEletrica, Required = true });
+        }
+
+        if (funcionario.TrabalhoAltura)
+        {
+            requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.NR35, Required = true });
+        }
+       
+       if (funcionario.MovimentacaoCarga)
+        {
+            requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.NR11, Required = true });
+        }
+
+        if (funcionario.CaldeirasVasosPressao)
+        {
+             requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.NR13, Required = true });
+        }
+    }
+
+    private bool IsUploaded(TipoDocumento tipo)
+    {
+        return uploadedDocs.Any(d => d.Tipo == tipo);
+    }
+
+    private Documento GetUploadedDoc(TipoDocumento tipo) => uploadedDocs.First(d => d.Tipo == tipo);
+
+    private string GetDownloadLink(Documento doc) => $"/{doc.ArquivoPath}";
+
+    private void GoBack()
+    {
+        if (funcionario?.FornecedorId > 0)
+        {
+            Navigation.NavigateTo($"/admin/fornecedores/{funcionario.FornecedorId}");
+        }
+        else
+        {
+             Navigation.NavigateTo("/admin/fornecedores");
+        }
+    }
+}

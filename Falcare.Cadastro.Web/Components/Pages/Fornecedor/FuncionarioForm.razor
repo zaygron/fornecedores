@@ -1,0 +1,110 @@
+@page "/fornecedor/funcionarios/novo"
+@page "/fornecedor/funcionarios/editar/{Id:int}"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+@using System.Security.Claims
+@using Falcare.Cadastro.Core.Entities
+@using Falcare.Cadastro.Core.Interfaces
+@using MudBlazor
+@attribute [Authorize]
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IFornecedorService FornecedorService
+@inject IFuncionarioService FuncionarioService
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<h4>@(Id == 0 ? "Novo Funcionário" : "Editar Funcionário")</h4>
+
+<div class="glass-card p-4">
+    <form @onsubmit="Submit">
+        <div class="mb-3">
+            <label class="form-label">Nome Completo</label>
+            <input @bind="model.Nome" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">CPF</label>
+            <input @bind="model.CPF" class="form-control" required placeholder="000.000.000-00" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Cargo</label>
+            <input @bind="model.Cargo" class="form-control" required />
+        </div>
+        
+        <div class="d-flex justify-end mt-4">
+            <button type="button" @onclick="Cancel" class="btn btn-secondary mr-2">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
+    </form>
+</div>
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    private Funcionario model = new() { Nome = string.Empty };
+    private DateTime? dataNascimento;
+    private Fornecedor? fornecedor;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity != null && user.Identity.IsAuthenticated)
+        {
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                fornecedor = await FornecedorService.GetByUserIdAsync(userId);
+            }
+        }
+
+        if (Id != 0)
+        {
+            var existing = await FuncionarioService.GetByIdAsync(Id);
+            if (existing != null)
+            {
+                if (fornecedor != null && existing.FornecedorId == fornecedor.Id)
+                {
+                    model = existing;
+                    dataNascimento = model.DataNascimento;
+                }
+                else
+                {
+                    Navigation.NavigateTo("/fornecedor/funcionarios");
+                }
+            }
+        }
+        else if (fornecedor != null)
+        {
+            model.FornecedorId = fornecedor.Id;
+        }
+    }
+
+    private async Task Submit()
+    {
+        model.DataNascimento = dataNascimento ?? DateTime.UtcNow;
+
+        try
+        {
+            if (model.Id == 0)
+            {
+                await FuncionarioService.AddAsync(model);
+            }
+            else
+            {
+                await FuncionarioService.UpdateAsync(model);
+            }
+            Navigation.NavigateTo("/fornecedor/funcionarios");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro: {ex.Message}");
+        }
+    }
+
+    private void Cancel() => Navigation.NavigateTo("/fornecedor/funcionarios");
+}

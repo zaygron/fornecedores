@@ -1,0 +1,118 @@
+@page "/fornecedor/dados-empresa"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@using Falcare.Cadastro.Core.Entities
+@using Falcare.Cadastro.Core.Interfaces
+@attribute [Authorize]
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IFornecedorService FornecedorService
+@inject ISnackbar Snackbar
+@rendermode InteractiveServer
+
+<MudText Typo="Typo.h4" GutterBottom="true">Meus Dados</MudText>
+
+@if (loading)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+}
+else if (fornecedor == null)
+{
+    <MudAlert Severity="Severity.Error">Fornecedor não encontrado para este usuário.</MudAlert>
+}
+else
+{
+    <MudPaper Class="pa-4">
+        <MudForm @ref="form" @bind-IsValid="@success">
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudTextField T="string" Label="Código" Value="@fornecedor.CodigoInterno" ReadOnly="true" Variant="Variant.Filled" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                     <MudTextField T="string" Label="CNPJ" Value="@fornecedor.CNPJ" ReadOnly="true" Variant="Variant.Filled" />
+                </MudItem>
+                
+                <MudItem xs="12" md="6">
+                    <MudTextField T="string" Label="Razão Social" @bind-Value="fornecedor.NomeEmpresa" Required="true" RequiredError="Razão Social é obrigatória" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField T="string" Label="Nome Fantasia" @bind-Value="fornecedor.NomeFantasia" />
+                </MudItem>
+
+                <MudItem xs="12" md="6">
+                    <MudTextField T="string" Label="Telefone" @bind-Value="fornecedor.Telefone" Mask="@(new PatternMask("(00) 0000-0000"))" />
+                </MudItem>
+                 <MudItem xs="12" md="6">
+                    <MudTextField T="string" Label="Celular" @bind-Value="fornecedor.Celular" Mask="@(new PatternMask("(00) 00000-0000"))" />
+                </MudItem>
+
+                <MudItem xs="12">
+                    <MudText Typo="Typo.subtitle1" Class="mt-4">Endereço</MudText>
+                    <MudDivider />
+                </MudItem>
+
+                 <MudItem xs="12" md="4">
+                    <MudTextField T="string" Label="CEP" @bind-Value="fornecedor.CEP" Mask="@(new PatternMask("00000-000"))" />
+                </MudItem>
+                <MudItem xs="12" md="8">
+                    <MudTextField T="string" Label="Logradouro" @bind-Value="fornecedor.Endereco" />
+                </MudItem>
+                 <MudItem xs="12" md="4">
+                    <MudTextField T="string" Label="Número/Comp" @bind-Value="fornecedor.Complemento" />
+                </MudItem>
+                <MudItem xs="12" md="4">
+                    <MudTextField T="string" Label="Bairro" @bind-Value="fornecedor.Bairro" />
+                </MudItem>
+                 <MudItem xs="12" md="4">
+                    <MudTextField T="string" Label="Cidade/UF" @bind-Value="fornecedor.Cidade" />
+                </MudItem>
+
+                <MudItem xs="12" Class="d-flex justify-end mt-4">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Salvar" Disabled="@(!success)">Salvar Alterações</MudButton>
+                </MudItem>
+            </MudGrid>
+        </MudForm>
+    </MudPaper>
+}
+
+@code {
+    bool loading = true;
+    bool success;
+    Fornecedor? fornecedor;
+    MudForm form;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity != null && user.Identity.IsAuthenticated)
+        {
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                fornecedor = await FornecedorService.GetByUserIdAsync(userId);
+            }
+        }
+        loading = false;
+    }
+
+    private async Task Salvar()
+    {
+        try
+        {
+            await form.Validate();
+            if (!form.IsValid) return;
+
+            if (fornecedor != null)
+            {
+                await FornecedorService.UpdateAsync(fornecedor);
+                Snackbar.Add("Dados atualizados com sucesso!", Severity.Success);
+            }
+        }
+        catch (Exception ex)
+        {
+             Snackbar.Add($"Erro ao salvar: {ex.Message}", Severity.Error);
+        }
+    }
+}

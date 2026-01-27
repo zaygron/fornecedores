@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+
+<MudNavMenu>
+    <AuthorizeView>
+        <Authorized>
+            <MudNavLink Href="/fornecedor/dashboard" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Dashboard">Dashboard</MudNavLink>
+        </Authorized>
+        <NotAuthorized>
+            <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+        </NotAuthorized>
+    </AuthorizeView>
+
+    <AuthorizeView Roles="Admin">
+        <Authorized>
+            <MudNavLink Href="/admin/solicitar-cadastro" Icon="@Icons.Material.Filled.PersonAdd">Solicitar Cadastro</MudNavLink>
+            <MudNavLink Href="/admin/fornecedores" Icon="@Icons.Material.Filled.List">Fornecedores</MudNavLink>
+        </Authorized>
+    </AuthorizeView>
+
+    <AuthorizeView>
+        <Authorized>
+             <MudDivider Class="my-2" />
+             <MudNavLink Href="/fornecedor/dados-empresa" Icon="@Icons.Material.Filled.Business">Meus Dados</MudNavLink>
+             <MudNavLink Href="/fornecedor/funcionarios" Icon="@Icons.Material.Filled.Group">Funcionários</MudNavLink>
+             <MudNavLink Href="/account/logout" Icon="@Icons.Material.Filled.Logout">Sair</MudNavLink>
+        </Authorized>
+        <NotAuthorized>
+            <MudDivider Class="my-2" />
+            <MudNavLink Href="/login" Icon="@Icons.Material.Filled.Login">Entrar</MudNavLink>
+        </NotAuthorized>
+    </AuthorizeView>
+</MudNavMenu>
