@@ -3,7 +3,7 @@ using Npgsql;
 // Script para criar o banco de dados PostgreSQL
 // Execute: dotnet run CreateDatabase.cs
 
-var connectionString = "Host=localhost;Port=5432;Username=postgres;Password=Admin@123;Database=postgres";
+var connectionString = "Host=localhost;Port=5433;Username=postgres;Password=Admin@123;Database=postgres";
 
 try
 {
