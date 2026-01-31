@@ -33,6 +33,8 @@ builder.Services.AddScoped<IFornecedorService, FornecedorService>();
 builder.Services.AddScoped<IFuncionarioService, FuncionarioService>();
 builder.Services.AddScoped<IFileStorageService, FileStorageService>();
 builder.Services.AddScoped<IDocumentoService, DocumentoService>();
+builder.Services.AddScoped<IDocumentoValidationService, DocumentoValidationService>();
+builder.Services.AddScoped<IDocumentoUploadService, DocumentoUploadService>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
