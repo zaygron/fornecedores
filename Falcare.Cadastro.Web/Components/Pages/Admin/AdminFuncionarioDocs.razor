@@ -137,23 +137,23 @@ else if (funcionario != null)
 
         if (funcionario!.TrabalhaComEletricidade)
         {
-            requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.NR10, Required = true });
+            requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.TreinamentoNR10, Required = true });
             requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.CertificadoEletrica, Required = true });
         }
 
         if (funcionario.TrabalhoAltura)
         {
-            requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.NR35, Required = true });
+            requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.TreinamentoNR35, Required = true });
         }
        
        if (funcionario.MovimentacaoCarga)
         {
-            requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.NR11, Required = true });
+            requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.TreinamentoNR11, Required = true });
         }
 
         if (funcionario.CaldeirasVasosPressao)
         {
-             requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.NR13, Required = true });
+             requiredDocuments.Add(new DocRequirement { Tipo = TipoDocumento.TreinamentoNR13, Required = true });
         }
     }
 
