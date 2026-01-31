@@ -17,23 +17,30 @@ public class FuncionarioService : IFuncionarioService
     public async Task<List<Funcionario>> GetByFornecedorIdAsync(int fornecedorId)
     {
         return await _context.Funcionarios
-            .Where(f => f.FornecedorId == fornecedorId)
+            .Where(f => f.FornecedorId == fornecedorId && f.Ativo)
+            .Include(f => f.Documentos)
+            .OrderBy(f => f.Nome)
             .ToListAsync();
     }
 
     public async Task<Funcionario?> GetByIdAsync(int id)
     {
-        return await _context.Funcionarios.FindAsync(id);
+        return await _context.Funcionarios
+            .Include(f => f.Fornecedor)
+            .Include(f => f.Documentos)
+            .FirstOrDefaultAsync(f => f.Id == id);
     }
 
     public async Task AddAsync(Funcionario funcionario)
     {
+        funcionario.DataCadastro = DateTime.UtcNow;
         _context.Funcionarios.Add(funcionario);
         await _context.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(Funcionario funcionario)
     {
+        funcionario.DataAtualizacao = DateTime.UtcNow;
         _context.Funcionarios.Update(funcionario);
         await _context.SaveChangesAsync();
     }
@@ -45,8 +52,19 @@ public class FuncionarioService : IFuncionarioService
         var funcionario = await _context.Funcionarios.FindAsync(id);
         if (funcionario != null)
         {
-            _context.Funcionarios.Remove(funcionario);
+            funcionario.Ativo = false;
+            _context.Funcionarios.Update(funcionario);
             await _context.SaveChangesAsync();
         }
+    }
+
+    public async Task<List<Funcionario>> GetAllAsync()
+    {
+        return await _context.Funcionarios
+            .Where(f => f.Ativo)
+            .Include(f => f.Fornecedor)
+            .Include(f => f.Documentos)
+            .OrderBy(f => f.Nome)
+            .ToListAsync();
     }
 }
