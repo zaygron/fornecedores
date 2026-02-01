@@ -7,221 +7,346 @@
 @using Falcare.Cadastro.Core.Entities
 @using Falcare.Cadastro.Core.Interfaces
 @using Falcare.Cadastro.Core.Enums
+@using MudBlazor
 @attribute [Authorize]
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IFornecedorService FornecedorService
 @inject IFuncionarioService FuncionarioService
 @inject NavigationManager Navigation
+@inject ISnackbar Snackbar
 @rendermode InteractiveServer
 
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-10">
-            <h3>@(Id == 0 ? "Novo Funcionário" : "Editar Funcionário")</h3>
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-4 mb-8">
+    <MudPaper Elevation="0" Class="pa-4">
+        <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-4">
+            <MudText Typo="Typo.h4" Color="Color.Primary">
+                <MudIcon Icon="@(Id == 0 ? Icons.Material.Filled.PersonAdd : Icons.Material.Filled.Edit)" Class="mr-2" />
+                @(Id == 0 ? "Novo Funcionário" : "Editar Funcionário")
+            </MudText>
+            <MudButton Variant="Variant.Text" 
+                       StartIcon="@Icons.Material.Filled.ArrowBack"
+                       Href="/fornecedor/funcionarios">
+                Voltar
+            </MudButton>
+        </MudStack>
+
+        <EditForm Model="model" OnValidSubmit="Submit">
+            <DataAnnotationsValidator />
             
-            <div class="card mt-3">
-                <div class="card-body">
-                    <EditForm Model="model" OnValidSubmit="Submit">
-                        <DataAnnotationsValidator />
-                        <ValidationSummary class="alert alert-danger" />
-
-                        <!-- Seção: Informações de Cadastro -->
-                        <h5 class="mt-4 mb-3 border-bottom pb-2">Informações de Cadastro</h5>
-                        
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Propósito do Cadastro</label>
-                                <select @bind="propositoCadastro" class="form-select">
-                                    <option value="">-- Selecione --</option>
-                                    <option value="Integração">Integração</option>
-                                    <option value="Outros">Outros</option>
-                                </select>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Natureza das Atividades</label>
-                                <select @bind="model.NaturezaAtividade" class="form-select">
-                                    <option value="">-- Selecione --</option>
-                                    <option value="Administrativo">Serviços Administrativos em Área de Escritório</option>
-                                    <option value="FabricaOficina">Serviços na Fábrica / Oficina</option>
-                                    <option value="Outros">Outros</option>
-                                </select>
-                            </div>
-                        </div>
-
+            <!-- Seção: Informações de Cadastro -->
+            <MudCard Elevation="3" Class="mb-4">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">
+                            <MudIcon Icon="@Icons.Material.Filled.Info" Class="mr-2" />
+                            Informações de Cadastro
+                        </MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem xs="12" md="6">
+                            <MudSelect T="string" 
+                                       @bind-Value="propositoCadastro" 
+                                       Label="Propósito do Cadastro" 
+                                       Variant="Variant.Outlined"
+                                       AdornmentIcon="@Icons.Material.Filled.Assignment"
+                                       Adornment="Adornment.Start">
+                                <MudSelectItem T="string" Value="@("")">-- Selecione --</MudSelectItem>
+                                <MudSelectItem T="string" Value="@("Integração")">Integração</MudSelectItem>
+                                <MudSelectItem T="string" Value="@("Outros")">Outros</MudSelectItem>
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudSelect T="NaturezaAtividade" 
+                                       @bind-Value="model.NaturezaAtividade" 
+                                       Label="Natureza das Atividades" 
+                                       Variant="Variant.Outlined"
+                                       AdornmentIcon="@Icons.Material.Filled.Work"
+                                       Adornment="Adornment.Start">
+                                <MudSelectItem T="NaturezaAtividade" Value="NaturezaAtividade.Administrativo">Serviços Administrativos em Área de Escritório</MudSelectItem>
+                                <MudSelectItem T="NaturezaAtividade" Value="NaturezaAtividade.FabricaOficina">Serviços na Fábrica / Oficina</MudSelectItem>
+                                <MudSelectItem T="NaturezaAtividade" Value="NaturezaAtividade.Outros">Outros</MudSelectItem>
+                            </MudSelect>
+                        </MudItem>
                         @if (model.NaturezaAtividade == NaturezaAtividade.Outros)
                         {
-                            <div class="mb-3">
-                                <label class="form-label">Descreva Outras Atividades</label>
-                                <textarea @bind="model.OutraNaturezaDescricao" class="form-control" rows="3" placeholder="Descreva as atividades..."></textarea>
-                            </div>
+                            <MudItem xs="12">
+                                <MudTextField T="string" 
+                                              @bind-Value="model.OutraNaturezaDescricao" 
+                                              Label="Descreva Outras Atividades" 
+                                              Variant="Variant.Outlined"
+                                              Lines="3"
+                                              Placeholder="Descreva as atividades..." />
+                            </MudItem>
                         }
+                    </MudGrid>
+                </MudCardContent>
+            </MudCard>
 
-                        <!-- Seção: Responsável Legal -->
-                        <h5 class="mt-4 mb-3 border-bottom pb-2">Responsável Legal</h5>
-                        
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Nome do Responsável Legal</label>
-                                <input @bind="model.NomeResponsavelLegal" class="form-control" required />
-                            </div>
+            <!-- Seção: Responsável Legal -->
+            <MudCard Elevation="3" Class="mb-4">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">
+                            <MudIcon Icon="@Icons.Material.Filled.AccountCircle" Class="mr-2" />
+                            Responsável Legal
+                        </MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem xs="12" md="6">
+                            <MudTextField T="string" 
+                                          @bind-Value="model.NomeResponsavelLegal" 
+                                          Label="Nome do Responsável Legal" 
+                                          Variant="Variant.Outlined"
+                                          Required="true"
+                                          AdornmentIcon="@Icons.Material.Filled.Person"
+                                          Adornment="Adornment.Start" />
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField T="string" 
+                                          @bind-Value="model.EmailResponsavel" 
+                                          Label="E-mail do Responsável" 
+                                          Variant="Variant.Outlined"
+                                          Required="true"
+                                          InputType="InputType.Email"
+                                          AdornmentIcon="@Icons.Material.Filled.Email"
+                                          Adornment="Adornment.Start" />
+                        </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+            </MudCard>
 
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">E-mail do Responsável</label>
-                                <input @bind="model.EmailResponsavel" type="email" class="form-control" required />
-                            </div>
-                        </div>
+            <!-- Seção: Dados Pessoais -->
+            <MudCard Elevation="3" Class="mb-4">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">
+                            <MudIcon Icon="@Icons.Material.Filled.Badge" Class="mr-2" />
+                            Dados Pessoais do Funcionário
+                        </MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem xs="12" md="6">
+                            <MudTextField T="string" 
+                                          @bind-Value="model.Nome" 
+                                          Label="Nome Completo" 
+                                          Variant="Variant.Outlined"
+                                          Required="true"
+                                          AdornmentIcon="@Icons.Material.Filled.Person"
+                                          Adornment="Adornment.Start" />
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField T="string" 
+                                          @bind-Value="model.Cargo" 
+                                          Label="Cargo/Função" 
+                                          Variant="Variant.Outlined"
+                                          Required="true"
+                                          AdornmentIcon="@Icons.Material.Filled.Work"
+                                          Adornment="Adornment.Start" />
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudDatePicker @bind-Date="dataNascimento" 
+                                           Label="Data de Nascimento" 
+                                           Variant="Variant.Outlined"
+                                           AdornmentIcon="@Icons.Material.Filled.Cake"
+                                           Adornment="Adornment.Start"
+                                           DateFormat="dd/MM/yyyy" />
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudSwitch T="bool" 
+                                       @bind-Value="model.Ativo" 
+                                       Label="Funcionário Ativo" 
+                                       Color="Color.Success" />
+                        </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+            </MudCard>
 
-                        <!-- Seção: Dados Pessoais -->
-                        <h5 class="mt-4 mb-3 border-bottom pb-2">Dados Pessoais do Funcionário</h5>
-                        
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Nome Completo</label>
-                                <input @bind="model.Nome" class="form-control" required />
-                            </div>
+            <!-- Seção: Documentos de Identificação -->
+            <MudCard Elevation="3" Class="mb-4">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">
+                            <MudIcon Icon="@Icons.Material.Filled.Description" Class="mr-2" />
+                            Documentos de Identificação
+                        </MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem xs="12" md="6">
+                            <MudTextField T="string" 
+                                          @bind-Value="model.CTPS_NumeroSerie" 
+                                          Label="Carteira de Trabalho (CTPS)" 
+                                          Variant="Variant.Outlined"
+                                          Placeholder="Ex: 123456789 / 001"
+                                          AdornmentIcon="@Icons.Material.Filled.CardMembership"
+                                          Adornment="Adornment.Start" />
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField T="string" 
+                                          @bind-Value="model.RG" 
+                                          Label="RG" 
+                                          Variant="Variant.Outlined"
+                                          Placeholder="Ex: 12.345.678-9"
+                                          AdornmentIcon="@Icons.Material.Filled.CreditCard"
+                                          Adornment="Adornment.Start" />
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudDatePicker @bind-Date="rgVencimento" 
+                                           Label="Data de Vencimento do RG" 
+                                           Variant="Variant.Outlined"
+                                           AdornmentIcon="@Icons.Material.Filled.CalendarToday"
+                                           Adornment="Adornment.Start"
+                                           DateFormat="dd/MM/yyyy" />
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField T="string" 
+                                          @bind-Value="model.CPF" 
+                                          Label="CPF" 
+                                          Variant="Variant.Outlined"
+                                          Required="true"
+                                          Placeholder="000.000.000-00"
+                                          AdornmentIcon="@Icons.Material.Filled.Fingerprint"
+                                          Adornment="Adornment.Start" />
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudDatePicker @bind-Date="cpfVencimento" 
+                                           Label="Data de Vencimento do CPF" 
+                                           Variant="Variant.Outlined"
+                                           AdornmentIcon="@Icons.Material.Filled.CalendarToday"
+                                           Adornment="Adornment.Start"
+                                           DateFormat="dd/MM/yyyy" />
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField T="string" 
+                                          @bind-Value="model.CNH" 
+                                          Label="CNH - Número" 
+                                          Variant="Variant.Outlined"
+                                          Placeholder="Ex: 12345678901"
+                                          AdornmentIcon="@Icons.Material.Filled.DriveEta"
+                                          Adornment="Adornment.Start" />
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudDatePicker @bind-Date="cnhVencimento" 
+                                           Label="Data de Vencimento da CNH" 
+                                           Variant="Variant.Outlined"
+                                           AdornmentIcon="@Icons.Material.Filled.CalendarToday"
+                                           Adornment="Adornment.Start"
+                                           DateFormat="dd/MM/yyyy" />
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudDatePicker @bind-Date="asoVencimento" 
+                                           Label="Data de Vencimento do ASO" 
+                                           Variant="Variant.Outlined"
+                                           AdornmentIcon="@Icons.Material.Filled.HealthAndSafety"
+                                           Adornment="Adornment.Start"
+                                           DateFormat="dd/MM/yyyy" />
+                        </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+            </MudCard>
 
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Cargo/Função</label>
-                                <input @bind="model.Cargo" class="form-control" required />
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Data de Nascimento</label>
-                                <input @bind="dataNascimento" type="date" class="form-control" />
-                            </div>
-                        </div>
-
-                        <!-- Seção: Documentos de Identificação -->
-                        <h5 class="mt-4 mb-3 border-bottom pb-2">Documentos de Identificação</h5>
-                        
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Carteira de Trabalho (CTPS) - Número e Série</label>
-                                <input @bind="model.CTPS_NumeroSerie" class="form-control" placeholder="Ex: 123456789 / 001" />
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">RG</label>
-                                <input @bind="model.RG" class="form-control" placeholder="Ex: 12.345.678-9" />
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Data de Vencimento do RG</label>
-                                <input @bind="rgVencimento" type="date" class="form-control" />
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">CPF</label>
-                                <input @bind="model.CPF" class="form-control" required placeholder="000.000.000-00" />
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Data de Vencimento do CPF</label>
-                                <input @bind="cpfVencimento" type="date" class="form-control" />
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">CNH - Número</label>
-                                <input @bind="model.CNH" class="form-control" placeholder="Ex: 12345678901" />
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Data de Vencimento da CNH</label>
-                                <input @bind="cnhVencimento" type="date" class="form-control" />
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Data de Vencimento do ASO</label>
-                                <input @bind="asoVencimento" type="date" class="form-control" />
-                            </div>
-                        </div>
-
-                        <!-- Seção: Conformidade e Segurança do Trabalho -->
-                        <h5 class="mt-4 mb-3 border-bottom pb-2">Conformidade e Segurança do Trabalho</h5>
-                        
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input @bind="model.TrabalhaComEletricidade" type="checkbox" class="form-check-input" id="eletricidade" />
-                                <label class="form-check-label" for="eletricidade">
-                                    Trabalhará com eletricidade?
-                                </label>
-                            </div>
+            <!-- Seção: Conformidade e Segurança do Trabalho -->
+            <MudCard Elevation="3" Class="mb-4">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">
+                            <MudIcon Icon="@Icons.Material.Filled.Security" Class="mr-2" />
+                            Conformidade e Segurança do Trabalho
+                        </MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudStack Spacing="4">
+                        <div>
+                            <MudSwitch T="bool" 
+                                       @bind-Value="model.TrabalhaComEletricidade" 
+                                       Label="Trabalhará com eletricidade?" 
+                                       Color="Color.Warning" />
                             @if (model.TrabalhaComEletricidade)
                             {
-                                <div class="alert alert-warning mt-2 mb-0">
-                                    ⚠️ Anexar documentos que comprovem. Além da indicação no ASO para trabalho com eletricidade.
-                                </div>
+                                <MudAlert Severity="Severity.Warning" Class="mt-2">
+                                    <MudText Typo="Typo.body2">
+                                        <strong>⚠️ Atenção:</strong> Anexar documentos que comprovem. Além da indicação no ASO para trabalho com eletricidade.
+                                    </MudText>
+                                </MudAlert>
                             }
                         </div>
 
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input @bind="model.MovimentacaoCarga" type="checkbox" class="form-check-input" id="nr11" />
-                                <label class="form-check-label" for="nr11">
-                                    Serviços com equipamentos de movimentação de cargas (NR11)?
-                                </label>
-                            </div>
+                        <div>
+                            <MudSwitch T="bool" 
+                                       @bind-Value="model.MovimentacaoCarga" 
+                                       Label="Serviços com equipamentos de movimentação de cargas (NR11)?" 
+                                       Color="Color.Warning" />
                             @if (model.MovimentacaoCarga)
                             {
-                                <div class="alert alert-warning mt-2 mb-0">
-                                    ⚠️ Solicitar anexar certificado de treinamento em NR11 conforme equipamento/veículo a ser operado.
-                                </div>
+                                <MudAlert Severity="Severity.Warning" Class="mt-2">
+                                    <MudText Typo="Typo.body2">
+                                        <strong>⚠️ Atenção:</strong> Solicitar anexar certificado de treinamento em NR11 conforme equipamento/veículo a ser operado.
+                                    </MudText>
+                                </MudAlert>
                             }
                         </div>
 
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input @bind="model.CaldeirasVasosPressao" type="checkbox" class="form-check-input" id="nr13" />
-                                <label class="form-check-label" for="nr13">
-                                    Serviços envolvendo caldeiras ou vasos de pressão (NR13)?
-                                </label>
-                            </div>
+                        <div>
+                            <MudSwitch T="bool" 
+                                       @bind-Value="model.CaldeirasVasosPressao" 
+                                       Label="Serviços envolvendo caldeiras ou vasos de pressão (NR13)?" 
+                                       Color="Color.Warning" />
                             @if (model.CaldeirasVasosPressao)
                             {
-                                <div class="alert alert-warning mt-2 mb-0">
-                                    ⚠️ Anexar certificado de treinamento de segurança de operação de caldeiras e comprovante de estágio prático ou experiência na função.
-                                </div>
+                                <MudAlert Severity="Severity.Warning" Class="mt-2">
+                                    <MudText Typo="Typo.body2">
+                                        <strong>⚠️ Atenção:</strong> Anexar certificado de treinamento de segurança de operação de caldeiras e comprovante de estágio prático ou experiência na função.
+                                    </MudText>
+                                </MudAlert>
                             }
                         </div>
 
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input @bind="model.TrabalhoAltura" type="checkbox" class="form-check-input" id="nr35" />
-                                <label class="form-check-label" for="nr35">
-                                    Serviços com trabalho em altura (NR35)?
-                                </label>
-                            </div>
+                        <div>
+                            <MudSwitch T="bool" 
+                                       @bind-Value="model.TrabalhoAltura" 
+                                       Label="Serviços com trabalho em altura (NR35)?" 
+                                       Color="Color.Warning" />
                             @if (model.TrabalhoAltura)
                             {
-                                <div class="alert alert-warning mt-2 mb-0">
-                                    ⚠️ Anexar:<br/>
-                                    1 - Certificado de conclusão de curso específico na área elétrica reconhecido pelo sistema oficial de ensino<br/>
-                                    2 - Certificado de treinamento NR 10 de acordo com a norma regulamentadora<br/>
-                                    3 - Certificado de treinamento SEP (Alta tensão)
-                                </div>
+                                <MudAlert Severity="Severity.Warning" Class="mt-2">
+                                    <MudText Typo="Typo.body2">
+                                        <strong>⚠️ Atenção:</strong> Anexar:<br/>
+                                        1 - Certificado de conclusão de curso específico na área elétrica reconhecido pelo sistema oficial de ensino<br/>
+                                        2 - Certificado de treinamento NR 10 de acordo com a norma regulamentadora<br/>
+                                        3 - Certificado de treinamento SEP (Alta tensão)
+                                    </MudText>
+                                </MudAlert>
                             }
                         </div>
+                    </MudStack>
+                </MudCardContent>
+            </MudCard>
 
-                        <!-- Botões -->
-                        <div class="d-flex justify-content-end gap-2 mt-4">
-                            <button type="button" @onclick="Cancel" class="btn btn-secondary">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">Salvar</button>
-                        </div>
-                    </EditForm>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+            <!-- Botões de Ação -->
+            <MudPaper Elevation="0" Class="d-flex justify-end gap-2 pa-4">
+                <MudButton Variant="Variant.Outlined" 
+                           StartIcon="@Icons.Material.Filled.Cancel"
+                           OnClick="Cancel">
+                    Cancelar
+                </MudButton>
+                <MudButton Variant="Variant.Filled" 
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.Save"
+                           ButtonType="ButtonType.Submit">
+                    Salvar
+                </MudButton>
+            </MudPaper>
+        </EditForm>
+    </MudPaper>
+</MudContainer>
 
 @code {
     [Parameter] public int Id { get; set; }
@@ -259,6 +384,7 @@
                     if (fornecedor != null && existing.FornecedorId == fornecedor.Id)
                     {
                         model = existing;
+                        propositoCadastro = model.PropositoCadastro ?? string.Empty;
                         dataNascimento = model.DataNascimento;
                         rgVencimento = model.RG_DataVencimento;
                         cpfVencimento = model.CPF_DataVencimento;
@@ -273,38 +399,42 @@
             }
             else if (fornecedor != null)
             {
-                model = new Funcionario { FornecedorId = fornecedor.Id };
+                model = new Funcionario { FornecedorId = fornecedor.Id, Ativo = true };
             }
         }
         catch (Exception ex)
         {
+            Snackbar.Add($"Erro ao inicializar: {ex.Message}", Severity.Error);
             Console.WriteLine($"Erro ao inicializar: {ex.Message}");
         }
     }
 
     private async Task Submit()
+    {
+        try
         {
-            try
-            {
-                model.PropositoCadastro = propositoCadastro;
-                model.DataNascimento = dataNascimento.HasValue ? DateTime.SpecifyKind(dataNascimento.Value, DateTimeKind.Utc) : null;
-                model.RG_DataVencimento = rgVencimento.HasValue ? DateTime.SpecifyKind(rgVencimento.Value, DateTimeKind.Utc) : null;
-                model.CPF_DataVencimento = cpfVencimento.HasValue ? DateTime.SpecifyKind(cpfVencimento.Value, DateTimeKind.Utc) : null;
-                model.CNH_DataVencimento = cnhVencimento.HasValue ? DateTime.SpecifyKind(cnhVencimento.Value, DateTimeKind.Utc) : null;
-                model.ASO_DataVencimento = asoVencimento.HasValue ? DateTime.SpecifyKind(asoVencimento.Value, DateTimeKind.Utc) : null;
+            model.PropositoCadastro = propositoCadastro;
+            model.DataNascimento = dataNascimento.HasValue ? DateTime.SpecifyKind(dataNascimento.Value, DateTimeKind.Utc) : null;
+            model.RG_DataVencimento = rgVencimento.HasValue ? DateTime.SpecifyKind(rgVencimento.Value, DateTimeKind.Utc) : null;
+            model.CPF_DataVencimento = cpfVencimento.HasValue ? DateTime.SpecifyKind(cpfVencimento.Value, DateTimeKind.Utc) : null;
+            model.CNH_DataVencimento = cnhVencimento.HasValue ? DateTime.SpecifyKind(cnhVencimento.Value, DateTimeKind.Utc) : null;
+            model.ASO_DataVencimento = asoVencimento.HasValue ? DateTime.SpecifyKind(asoVencimento.Value, DateTimeKind.Utc) : null;
 
             if (model.Id == 0)
             {
                 await FuncionarioService.AddAsync(model);
+                Snackbar.Add("Funcionário cadastrado com sucesso!", Severity.Success);
             }
             else
             {
                 await FuncionarioService.UpdateAsync(model);
+                Snackbar.Add("Funcionário atualizado com sucesso!", Severity.Success);
             }
             Navigation.NavigateTo("/fornecedor/funcionarios");
         }
         catch (Exception ex)
         {
+            Snackbar.Add($"Erro ao salvar: {ex.Message}", Severity.Error);
             Console.WriteLine($"Erro ao salvar: {ex.Message}");
         }
     }
