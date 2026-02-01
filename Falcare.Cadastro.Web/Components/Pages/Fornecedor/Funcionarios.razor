@@ -86,25 +86,25 @@
                                 <MudText Typo="Typo.body2">@context.CPF</MudText>
                             </MudTd>
                             <MudTd DataLabel="Propósito">
-                                <MudChip Size="Size.Small" Color="Color.Info" Variant="Variant.Filled">
+                                <MudChip T="string" Size="Size.Small" Color="Color.Info" Variant="Variant.Filled">
                                     @context.PropositoCadastro
                                 </MudChip>
                             </MudTd>
                             <MudTd DataLabel="Natureza">
-                                <MudChip Size="Size.Small" Color="Color.Secondary" Variant="Variant.Outlined">
+                                <MudChip T="string" Size="Size.Small" Color="Color.Secondary" Variant="Variant.Outlined">
                                     @context.NaturezaAtividade.ToString()
                                 </MudChip>
                             </MudTd>
                             <MudTd DataLabel="Status">
                                 @if (context.Ativo)
                                 {
-                                    <MudChip Size="Size.Small" Color="Color.Success" Icon="@Icons.Material.Filled.CheckCircle">
+                                    <MudChip T="string" Size="Size.Small" Color="Color.Success" Icon="@Icons.Material.Filled.CheckCircle">
                                         Ativo
                                     </MudChip>
                                 }
                                 else
                                 {
-                                    <MudChip Size="Size.Small" Color="Color.Default" Icon="@Icons.Material.Filled.Cancel">
+                                    <MudChip T="string" Size="Size.Small" Color="Color.Default" Icon="@Icons.Material.Filled.Cancel">
                                         Inativo
                                     </MudChip>
                                 }
