@@ -1,5 +1,4 @@
 @using MudBlazor
-@using Microsoft.AspNetCore.Components
 
 <MudDialog>
     <DialogContent>
@@ -13,7 +12,7 @@
 
 @code {
     [CascadingParameter] 
-    MudDialogInstance MudDialog { get; set; } = null!;
+    private IMudDialogInstance MudDialog { get; set; } = null!;
 
     [Parameter] 
     public string ContentText { get; set; } = string.Empty;
