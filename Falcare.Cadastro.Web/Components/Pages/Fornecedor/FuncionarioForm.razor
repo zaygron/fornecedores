@@ -287,11 +287,11 @@
             try
             {
                 model.PropositoCadastro = propositoCadastro;
-                model.DataNascimento = dataNascimento;
-                model.RG_DataVencimento = rgVencimento;
-                model.CPF_DataVencimento = cpfVencimento;
-                model.CNH_DataVencimento = cnhVencimento;
-                model.ASO_DataVencimento = asoVencimento;
+                model.DataNascimento = dataNascimento.HasValue ? DateTime.SpecifyKind(dataNascimento.Value, DateTimeKind.Utc) : null;
+                model.RG_DataVencimento = rgVencimento.HasValue ? DateTime.SpecifyKind(rgVencimento.Value, DateTimeKind.Utc) : null;
+                model.CPF_DataVencimento = cpfVencimento.HasValue ? DateTime.SpecifyKind(cpfVencimento.Value, DateTimeKind.Utc) : null;
+                model.CNH_DataVencimento = cnhVencimento.HasValue ? DateTime.SpecifyKind(cnhVencimento.Value, DateTimeKind.Utc) : null;
+                model.ASO_DataVencimento = asoVencimento.HasValue ? DateTime.SpecifyKind(asoVencimento.Value, DateTimeKind.Utc) : null;
 
             if (model.Id == 0)
             {
