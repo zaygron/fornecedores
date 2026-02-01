@@ -3,11 +3,10 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Forms
-@using Microsoft.AspNetCore.Components.Web
 @using System.Security.Claims
 @using Falcare.Cadastro.Core.Entities
 @using Falcare.Cadastro.Core.Interfaces
-@using MudBlazor
+@using Falcare.Cadastro.Core.Enums
 @attribute [Authorize]
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IFornecedorService FornecedorService
@@ -15,81 +14,283 @@
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 
-<h4>@(Id == 0 ? "Novo Funcionário" : "Editar Funcionário")</h4>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-10">
+            <h3>@(Id == 0 ? "Novo Funcionário" : "Editar Funcionário")</h3>
+            
+            <div class="card mt-3">
+                <div class="card-body">
+                    <EditForm Model="model" OnValidSubmit="Submit">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary class="alert alert-danger" />
 
-<div class="glass-card p-4">
-    <form @onsubmit="Submit">
-        <div class="mb-3">
-            <label class="form-label">Nome Completo</label>
-            <input @bind="model.Nome" class="form-control" required />
-        </div>
+                        <!-- Seção: Informações de Cadastro -->
+                        <h5 class="mt-4 mb-3 border-bottom pb-2">Informações de Cadastro</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Propósito do Cadastro</label>
+                                <select @bind="model.PropositoCadastro" class="form-select">
+                                    <option value="">-- Selecione --</option>
+                                    <option value="Integração">Integração</option>
+                                    <option value="Outros">Outros</option>
+                                </select>
+                            </div>
 
-        <div class="mb-3">
-            <label class="form-label">CPF</label>
-            <input @bind="model.CPF" class="form-control" required placeholder="000.000.000-00" />
-        </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Natureza das Atividades</label>
+                                <select @bind="model.NaturezaAtividade" class="form-select">
+                                    <option value="">-- Selecione --</option>
+                                    <option value="AdministrativoEscritorio">Serviços Administrativos em Área de Escritório</option>
+                                    <option value="FabricaOficina">Serviços na Fábrica / Oficina</option>
+                                    <option value="Outros">Outros</option>
+                                </select>
+                            </div>
+                        </div>
 
-        <div class="mb-3">
-            <label class="form-label">Cargo</label>
-            <input @bind="model.Cargo" class="form-control" required />
+                        @if (model.NaturezaAtividade == "Outros")
+                        {
+                            <div class="mb-3">
+                                <label class="form-label">Descreva Outras Atividades</label>
+                                <textarea @bind="model.OutraNaturezaDescricao" class="form-control" rows="3" placeholder="Descreva as atividades..."></textarea>
+                            </div>
+                        }
+
+                        <!-- Seção: Responsável Legal -->
+                        <h5 class="mt-4 mb-3 border-bottom pb-2">Responsável Legal</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nome do Responsável Legal</label>
+                                <input @bind="model.NomeResponsavelLegal" class="form-control" required />
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">E-mail do Responsável</label>
+                                <input @bind="model.EmailResponsavel" type="email" class="form-control" required />
+                            </div>
+                        </div>
+
+                        <!-- Seção: Dados Pessoais -->
+                        <h5 class="mt-4 mb-3 border-bottom pb-2">Dados Pessoais do Funcionário</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nome Completo</label>
+                                <input @bind="model.Nome" class="form-control" required />
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Cargo/Função</label>
+                                <input @bind="model.Cargo" class="form-control" required />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Data de Nascimento</label>
+                                <input @bind="dataNascimento" type="date" class="form-control" />
+                            </div>
+                        </div>
+
+                        <!-- Seção: Documentos de Identificação -->
+                        <h5 class="mt-4 mb-3 border-bottom pb-2">Documentos de Identificação</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Carteira de Trabalho (CTPS) - Número e Série</label>
+                                <input @bind="model.CTPS_NumeroSerie" class="form-control" placeholder="Ex: 123456789 / 001" />
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">RG</label>
+                                <input @bind="model.RG" class="form-control" placeholder="Ex: 12.345.678-9" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Data de Vencimento do RG</label>
+                                <input @bind="rgVencimento" type="date" class="form-control" />
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">CPF</label>
+                                <input @bind="model.CPF" class="form-control" required placeholder="000.000.000-00" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Data de Vencimento do CPF</label>
+                                <input @bind="cpfVencimento" type="date" class="form-control" />
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">CNH - Número</label>
+                                <input @bind="model.CNH" class="form-control" placeholder="Ex: 12345678901" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Data de Vencimento da CNH</label>
+                                <input @bind="cnhVencimento" type="date" class="form-control" />
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Data de Vencimento do ASO</label>
+                                <input @bind="asoVencimento" type="date" class="form-control" />
+                            </div>
+                        </div>
+
+                        <!-- Seção: Conformidade e Segurança do Trabalho -->
+                        <h5 class="mt-4 mb-3 border-bottom pb-2">Conformidade e Segurança do Trabalho</h5>
+                        
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input @bind="model.TrabalhaComEletricidade" type="checkbox" class="form-check-input" id="eletricidade" />
+                                <label class="form-check-label" for="eletricidade">
+                                    Trabalhará com eletricidade?
+                                </label>
+                            </div>
+                            @if (model.TrabalhaComEletricidade)
+                            {
+                                <div class="alert alert-warning mt-2 mb-0">
+                                    ⚠️ Anexar documentos que comprovem. Além da indicação no ASO para trabalho com eletricidade.
+                                </div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input @bind="model.MovimentacaoCarga" type="checkbox" class="form-check-input" id="nr11" />
+                                <label class="form-check-label" for="nr11">
+                                    Serviços com equipamentos de movimentação de cargas (NR11)?
+                                </label>
+                            </div>
+                            @if (model.MovimentacaoCarga)
+                            {
+                                <div class="alert alert-warning mt-2 mb-0">
+                                    ⚠️ Solicitar anexar certificado de treinamento em NR11 conforme equipamento/veículo a ser operado.
+                                </div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input @bind="model.CaldeirasVasosPressao" type="checkbox" class="form-check-input" id="nr13" />
+                                <label class="form-check-label" for="nr13">
+                                    Serviços envolvendo caldeiras ou vasos de pressão (NR13)?
+                                </label>
+                            </div>
+                            @if (model.CaldeirasVasosPressao)
+                            {
+                                <div class="alert alert-warning mt-2 mb-0">
+                                    ⚠️ Anexar certificado de treinamento de segurança de operação de caldeiras e comprovante de estágio prático ou experiência na função.
+                                </div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input @bind="model.TrabalhoAltura" type="checkbox" class="form-check-input" id="nr35" />
+                                <label class="form-check-label" for="nr35">
+                                    Serviços com trabalho em altura (NR35)?
+                                </label>
+                            </div>
+                            @if (model.TrabalhoAltura)
+                            {
+                                <div class="alert alert-warning mt-2 mb-0">
+                                    ⚠️ Anexar:<br/>
+                                    1 - Certificado de conclusão de curso específico na área elétrica reconhecido pelo sistema oficial de ensino<br/>
+                                    2 - Certificado de treinamento NR 10 de acordo com a norma regulamentadora<br/>
+                                    3 - Certificado de treinamento SEP (Alta tensão)
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Botões -->
+                        <div class="d-flex justify-content-end gap-2 mt-4">
+                            <button type="button" @onclick="Cancel" class="btn btn-secondary">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
         </div>
-        
-        <div class="d-flex justify-end mt-4">
-            <button type="button" @onclick="Cancel" class="btn btn-secondary mr-2">Cancelar</button>
-            <button type="submit" class="btn btn-primary">Salvar</button>
-        </div>
-    </form>
+    </div>
 </div>
 
 @code {
     [Parameter] public int Id { get; set; }
 
-    private Funcionario model = new() { Nome = string.Empty };
+    private Funcionario model = new();
     private DateTime? dataNascimento;
+    private DateTime? rgVencimento;
+    private DateTime? cpfVencimento;
+    private DateTime? cnhVencimento;
+    private DateTime? asoVencimento;
     private Fornecedor? fornecedor;
 
     protected override async Task OnInitializedAsync()
     {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity != null && user.Identity.IsAuthenticated)
+        try
         {
-            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (!string.IsNullOrEmpty(userId))
-            {
-                fornecedor = await FornecedorService.GetByUserIdAsync(userId);
-            }
-        }
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
 
-        if (Id != 0)
-        {
-            var existing = await FuncionarioService.GetByIdAsync(Id);
-            if (existing != null)
+            if (user.Identity != null && user.Identity.IsAuthenticated)
             {
-                if (fornecedor != null && existing.FornecedorId == fornecedor.Id)
+                var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (!string.IsNullOrEmpty(userId))
                 {
-                    model = existing;
-                    dataNascimento = model.DataNascimento;
-                }
-                else
-                {
-                    Navigation.NavigateTo("/fornecedor/funcionarios");
+                    fornecedor = await FornecedorService.GetByUserIdAsync(userId);
                 }
             }
+
+            if (Id != 0)
+            {
+                var existing = await FuncionarioService.GetByIdAsync(Id);
+                if (existing != null)
+                {
+                    if (fornecedor != null && existing.FornecedorId == fornecedor.Id)
+                    {
+                        model = existing;
+                        dataNascimento = model.DataNascimento;
+                        rgVencimento = model.RG_DataVencimento;
+                        cpfVencimento = model.CPF_DataVencimento;
+                        cnhVencimento = model.CNH_DataVencimento;
+                        asoVencimento = model.ASO_DataVencimento;
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/fornecedor/funcionarios");
+                    }
+                }
+            }
+            else if (fornecedor != null)
+            {
+                model = new Funcionario { FornecedorId = fornecedor.Id };
+            }
         }
-        else if (fornecedor != null)
+        catch (Exception ex)
         {
-            model.FornecedorId = fornecedor.Id;
+            Console.WriteLine($"Erro ao inicializar: {ex.Message}");
         }
     }
 
     private async Task Submit()
     {
-        model.DataNascimento = dataNascimento ?? DateTime.UtcNow;
-
         try
         {
+            model.DataNascimento = dataNascimento;
+            model.RG_DataVencimento = rgVencimento;
+            model.CPF_DataVencimento = cpfVencimento;
+            model.CNH_DataVencimento = cnhVencimento;
+            model.ASO_DataVencimento = asoVencimento;
+
             if (model.Id == 0)
             {
                 await FuncionarioService.AddAsync(model);
@@ -102,7 +303,7 @@
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Erro: {ex.Message}");
+            Console.WriteLine($"Erro ao salvar: {ex.Message}");
         }
     }
 
