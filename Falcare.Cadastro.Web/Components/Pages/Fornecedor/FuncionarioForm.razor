@@ -181,15 +181,77 @@
                 </MudCardHeader>
                 <MudCardContent Class="py-2">
                     <MudGrid Spacing="2">
-                        <MudItem xs="12" md="6">
-                            <MudTextField T="string" 
-                                          @bind-Value="model.CTPS_NumeroSerie" 
-                                          Label="Carteira de Trabalho (CTPS)" 
-                                          Variant="Variant.Outlined"
-                                          Placeholder="Ex: 123456789 / 001"
-                                          AdornmentIcon="@Icons.Material.Filled.CardMembership"
-                                          Adornment="Adornment.Start" />
+                        <MudItem xs="12">
+                            <MudText Typo="Typo.body2" Class="mb-2">Carteira de Trabalho (CTPS)</MudText>
+                            <MudRadioGroup T="string" @bind-Value="model.CTPS_Tipo" Row="true">
+                                <MudRadio T="string" Value="@("Digital")" Color="Color.Primary">Digital (CPF)</MudRadio>
+                                <MudRadio T="string" Value="@("Fisica")" Color="Color.Primary">Física</MudRadio>
+                            </MudRadioGroup>
                         </MudItem>
+                        @if (model.CTPS_Tipo == "Digital")
+                        {
+                            <MudItem xs="12" md="6">
+                                <MudTextField T="string" 
+                                              @bind-Value="model.CTPS_NumeroSerie" 
+                                              Label="CPF (CTPS Digital)" 
+                                              Variant="Variant.Outlined"
+                                              AdornmentIcon="@Icons.Material.Filled.Fingerprint"
+                                              Adornment="Adornment.Start"
+                                              Mask="@(new PatternMask("000.000.000-00"))"
+                                              Placeholder="000.000.000-00"
+                                              HelperText="CTPS Digital usa o CPF como identificação" />
+                            </MudItem>
+                        }
+                        else
+                        {
+                            <MudItem xs="12" md="6">
+                                <MudTextField T="string" 
+                                              @bind-Value="model.CTPS_NumeroSerie" 
+                                              Label="Número/Série da CTPS" 
+                                              Variant="Variant.Outlined"
+                                              AdornmentIcon="@Icons.Material.Filled.CardMembership"
+                                              Adornment="Adornment.Start"
+                                              Mask="@(new PatternMask("0000000/000"))"
+                                              Placeholder="1234567/001" />
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudSelect T="string" 
+                                           @bind-Value="model.CTPS_UF" 
+                                           Label="UF da CTPS" 
+                                           Variant="Variant.Outlined"
+                                           AdornmentIcon="@Icons.Material.Filled.LocationOn"
+                                           Adornment="Adornment.Start">
+                                    <MudSelectItem T="string" Value="@(null)">-- Selecione --</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("AC")">AC - Acre</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("AL")">AL - Alagoas</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("AP")">AP - Amapá</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("AM")">AM - Amazonas</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("BA")">BA - Bahia</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("CE")">CE - Ceará</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("DF")">DF - Distrito Federal</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("ES")">ES - Espírito Santo</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("GO")">GO - Goiás</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("MA")">MA - Maranhão</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("MT")">MT - Mato Grosso</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("MS")">MS - Mato Grosso do Sul</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("MG")">MG - Minas Gerais</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("PA")">PA - Pará</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("PB")">PB - Paraíba</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("PR")">PR - Paraná</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("PE")">PE - Pernambuco</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("PI")">PI - Piauí</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("RJ")">RJ - Rio de Janeiro</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("RN")">RN - Rio Grande do Norte</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("RS")">RS - Rio Grande do Sul</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("RO")">RO - Rondônia</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("RR")">RR - Roraima</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("SC")">SC - Santa Catarina</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("SP")">SP - São Paulo</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("SE")">SE - Sergipe</MudSelectItem>
+                                    <MudSelectItem T="string" Value="@("TO")">TO - Tocantins</MudSelectItem>
+                                </MudSelect>
+                            </MudItem>
+                        }
                         <MudItem xs="12" md="6">
                             <MudTextField T="string" 
                                           @bind-Value="model.RG" 

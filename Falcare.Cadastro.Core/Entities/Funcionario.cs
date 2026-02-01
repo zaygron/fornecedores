@@ -25,7 +25,9 @@ public class Funcionario
     public DateTime? DataNascimento { get; set; }
 
     // Carteira de Trabalho (CTPS)
+    public string CTPS_Tipo { get; set; } = "Digital"; // "Digital" ou "Fisica"
     public string? CTPS_NumeroSerie { get; set; }
+    public string? CTPS_UF { get; set; }
 
     // RG - Registro Geral
     public string? RG { get; set; }
