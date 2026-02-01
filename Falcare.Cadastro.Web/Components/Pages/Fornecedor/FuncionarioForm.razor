@@ -150,13 +150,14 @@
                                           Adornment="Adornment.Start" />
                         </MudItem>
                         <MudItem xs="12" md="6">
-                            <MudDatePicker @bind-Date="dataNascimento" 
-                                           Label="Data de Nascimento" 
-                                           Variant="Variant.Outlined"
-                                           AdornmentIcon="@Icons.Material.Filled.Cake"
-                                           Adornment="Adornment.Start"
-                                           DateFormat="dd/MM/yyyy"
-                                           Editable="true" />
+                            <MudTextField T="string" 
+                                          @bind-Value="dataNascimentoStr" 
+                                          Label="Data de Nascimento" 
+                                          Variant="Variant.Outlined"
+                                          AdornmentIcon="@Icons.Material.Filled.Cake"
+                                          Adornment="Adornment.Start"
+                                          Mask="@(new DateMask("dd/MM/yyyy"))"
+                                          Placeholder="dd/MM/yyyy" />
                         </MudItem>
                         <MudItem xs="12" md="6">
                             <MudSwitch T="bool" 
@@ -199,13 +200,14 @@
                                           Adornment="Adornment.Start" />
                         </MudItem>
                         <MudItem xs="12" md="6">
-                            <MudDatePicker @bind-Date="rgVencimento" 
-                                           Label="Data de Vencimento do RG" 
-                                           Variant="Variant.Outlined"
-                                           AdornmentIcon="@Icons.Material.Filled.CalendarToday"
-                                           Adornment="Adornment.Start"
-                                           DateFormat="dd/MM/yyyy"
-                                           Editable="true" />
+                            <MudTextField T="string" 
+                                          @bind-Value="rgVencimentoStr" 
+                                          Label="Data de Vencimento do RG" 
+                                          Variant="Variant.Outlined"
+                                          AdornmentIcon="@Icons.Material.Filled.CalendarToday"
+                                          Adornment="Adornment.Start"
+                                          Mask="@(new DateMask("dd/MM/yyyy"))"
+                                          Placeholder="dd/MM/yyyy" />
                         </MudItem>
                         <MudItem xs="12" md="6">
                             <MudTextField T="string" 
@@ -218,13 +220,14 @@
                                           Adornment="Adornment.Start" />
                         </MudItem>
                         <MudItem xs="12" md="6">
-                            <MudDatePicker @bind-Date="cpfVencimento" 
-                                           Label="Data de Vencimento do CPF" 
-                                           Variant="Variant.Outlined"
-                                           AdornmentIcon="@Icons.Material.Filled.CalendarToday"
-                                           Adornment="Adornment.Start"
-                                           DateFormat="dd/MM/yyyy"
-                                           Editable="true" />
+                            <MudTextField T="string" 
+                                          @bind-Value="cpfVencimentoStr" 
+                                          Label="Data de Vencimento do CPF" 
+                                          Variant="Variant.Outlined"
+                                          AdornmentIcon="@Icons.Material.Filled.CalendarToday"
+                                          Adornment="Adornment.Start"
+                                          Mask="@(new DateMask("dd/MM/yyyy"))"
+                                          Placeholder="dd/MM/yyyy" />
                         </MudItem>
                         <MudItem xs="12" md="6">
                             <MudTextField T="string" 
@@ -236,22 +239,24 @@
                                           Adornment="Adornment.Start" />
                         </MudItem>
                         <MudItem xs="12" md="6">
-                            <MudDatePicker @bind-Date="cnhVencimento" 
-                                           Label="Data de Vencimento da CNH" 
-                                           Variant="Variant.Outlined"
-                                           AdornmentIcon="@Icons.Material.Filled.CalendarToday"
-                                           Adornment="Adornment.Start"
-                                           DateFormat="dd/MM/yyyy"
-                                           Editable="true" />
+                            <MudTextField T="string" 
+                                          @bind-Value="cnhVencimentoStr" 
+                                          Label="Data de Vencimento da CNH" 
+                                          Variant="Variant.Outlined"
+                                          AdornmentIcon="@Icons.Material.Filled.CalendarToday"
+                                          Adornment="Adornment.Start"
+                                          Mask="@(new DateMask("dd/MM/yyyy"))"
+                                          Placeholder="dd/MM/yyyy" />
                         </MudItem>
                         <MudItem xs="12" md="6">
-                            <MudDatePicker @bind-Date="asoVencimento" 
-                                           Label="Data de Vencimento do ASO" 
-                                           Variant="Variant.Outlined"
-                                           AdornmentIcon="@Icons.Material.Filled.HealthAndSafety"
-                                           Adornment="Adornment.Start"
-                                           DateFormat="dd/MM/yyyy"
-                                           Editable="true" />
+                            <MudTextField T="string" 
+                                          @bind-Value="asoVencimentoStr" 
+                                          Label="Data de Vencimento do ASO" 
+                                          Variant="Variant.Outlined"
+                                          AdornmentIcon="@Icons.Material.Filled.HealthAndSafety"
+                                          Adornment="Adornment.Start"
+                                          Mask="@(new DateMask("dd/MM/yyyy"))"
+                                          Placeholder="dd/MM/yyyy" />
                         </MudItem>
                     </MudGrid>
                 </MudCardContent>
@@ -357,11 +362,11 @@
     [Parameter] public int Id { get; set; }
 
     private Funcionario model = new();
-    private DateTime? dataNascimento;
-    private DateTime? rgVencimento;
-    private DateTime? cpfVencimento;
-    private DateTime? cnhVencimento;
-    private DateTime? asoVencimento;
+    private string dataNascimentoStr = string.Empty;
+    private string rgVencimentoStr = string.Empty;
+    private string cpfVencimentoStr = string.Empty;
+    private string cnhVencimentoStr = string.Empty;
+    private string asoVencimentoStr = string.Empty;
     private Fornecedor? fornecedor;
     private string propositoCadastro = string.Empty;
 
@@ -390,11 +395,11 @@
                     {
                         model = existing;
                         propositoCadastro = model.PropositoCadastro ?? string.Empty;
-                        dataNascimento = model.DataNascimento;
-                        rgVencimento = model.RG_DataVencimento;
-                        cpfVencimento = model.CPF_DataVencimento;
-                        cnhVencimento = model.CNH_DataVencimento;
-                        asoVencimento = model.ASO_DataVencimento;
+                        dataNascimentoStr = model.DataNascimento?.ToString("dd/MM/yyyy") ?? string.Empty;
+                        rgVencimentoStr = model.RG_DataVencimento?.ToString("dd/MM/yyyy") ?? string.Empty;
+                        cpfVencimentoStr = model.CPF_DataVencimento?.ToString("dd/MM/yyyy") ?? string.Empty;
+                        cnhVencimentoStr = model.CNH_DataVencimento?.ToString("dd/MM/yyyy") ?? string.Empty;
+                        asoVencimentoStr = model.ASO_DataVencimento?.ToString("dd/MM/yyyy") ?? string.Empty;
                     }
                     else
                     {
@@ -419,11 +424,11 @@
         try
         {
             model.PropositoCadastro = propositoCadastro;
-            model.DataNascimento = dataNascimento.HasValue ? DateTime.SpecifyKind(dataNascimento.Value, DateTimeKind.Utc) : null;
-            model.RG_DataVencimento = rgVencimento.HasValue ? DateTime.SpecifyKind(rgVencimento.Value, DateTimeKind.Utc) : null;
-            model.CPF_DataVencimento = cpfVencimento.HasValue ? DateTime.SpecifyKind(cpfVencimento.Value, DateTimeKind.Utc) : null;
-            model.CNH_DataVencimento = cnhVencimento.HasValue ? DateTime.SpecifyKind(cnhVencimento.Value, DateTimeKind.Utc) : null;
-            model.ASO_DataVencimento = asoVencimento.HasValue ? DateTime.SpecifyKind(asoVencimento.Value, DateTimeKind.Utc) : null;
+            model.DataNascimento = ParseDateString(dataNascimentoStr);
+            model.RG_DataVencimento = ParseDateString(rgVencimentoStr);
+            model.CPF_DataVencimento = ParseDateString(cpfVencimentoStr);
+            model.CNH_DataVencimento = ParseDateString(cnhVencimentoStr);
+            model.ASO_DataVencimento = ParseDateString(asoVencimentoStr);
 
             if (model.Id == 0)
             {
@@ -442,6 +447,22 @@
             Snackbar.Add($"Erro ao salvar: {ex.Message}", Severity.Error);
             Console.WriteLine($"Erro ao salvar: {ex.Message}");
         }
+    }
+
+    private DateTime? ParseDateString(string dateStr)
+    {
+        if (string.IsNullOrWhiteSpace(dateStr))
+            return null;
+
+        if (DateTime.TryParseExact(dateStr, "dd/MM/yyyy", 
+            System.Globalization.CultureInfo.InvariantCulture, 
+            System.Globalization.DateTimeStyles.None, 
+            out DateTime result))
+        {
+            return DateTime.SpecifyKind(result, DateTimeKind.Utc);
+        }
+
+        return null;
     }
 
     private void Cancel() => Navigation.NavigateTo("/fornecedor/funcionarios");
