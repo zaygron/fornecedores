@@ -4,95 +4,158 @@
 @using System.Security.Claims
 @using Falcare.Cadastro.Core.Entities
 @using Falcare.Cadastro.Core.Interfaces
+@using MudBlazor
 @attribute [Authorize]
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IFornecedorService FornecedorService
 @inject IFuncionarioService FuncionarioService
 @inject NavigationManager Navigation
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
 @rendermode InteractiveServer
 
-<div class="container mt-4">
-    <div class="row mb-3">
-        <div class="col-md-8">
-            <h3>Funcionários Cadastrados</h3>
-        </div>
-        <div class="col-md-4 text-end">
-            <a href="/fornecedor/funcionarios/novo" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Novo Funcionário
-            </a>
-        </div>
-    </div>
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-4">
+    <MudPaper Elevation="0" Class="pa-4">
+        <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-4">
+            <MudText Typo="Typo.h4" Color="Color.Primary">
+                <MudIcon Icon="@Icons.Material.Filled.People" Class="mr-2" />
+                Funcionários Cadastrados
+            </MudText>
+            <MudButton Variant="Variant.Filled" 
+                       Color="Color.Primary" 
+                       StartIcon="@Icons.Material.Filled.Add"
+                       Href="/fornecedor/funcionarios/novo">
+                Novo Funcionário
+            </MudButton>
+        </MudStack>
 
-    @if (loading)
-    {
-        <div class="text-center">
-            <div class="spinner-border" role="status">
-                <span class="visually-hidden">Carregando...</span>
-            </div>
-        </div>
-    }
-    else if (funcionarios == null || !funcionarios.Any())
-    {
-        <div class="alert alert-info">
-            <i class="fas fa-info-circle"></i> Nenhum funcionário cadastrado ainda.
-        </div>
-    }
-    else
-    {
-        <div class="card">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Cargo</th>
-                                <th>CPF</th>
-                                <th>Propósito</th>
-                                <th>Ativo</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var func in funcionarios)
-                            {
-                                <tr>
-                                    <td>@func.Nome</td>
-                                    <td>@func.Cargo</td>
-                                    <td>@func.CPF</td>
-                                    <td>@func.PropositoCadastro</td>
-                                    <td>
-                                        @if (func.Ativo)
-                                        {
-                                            <span class="badge bg-success">Ativo</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="badge bg-secondary">Inativo</span>
-                                        }
-                                    </td>
-                                    <td>
-                                        <a href="/fornecedor/funcionarios/editar/@func.Id" class="btn btn-sm btn-warning me-1">
-                                            <i class="fas fa-edit"></i> Editar
-                                        </a>
-                                        <button @onclick="() => DeleteFuncionario(func.Id)" class="btn btn-sm btn-danger">
-                                            <i class="fas fa-trash"></i> Excluir
-                                        </button>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    }
-</div>
+        @if (loading)
+        {
+            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+            <MudText Align="Align.Center" Typo="Typo.body1" Class="my-4">
+                Carregando funcionários...
+            </MudText>
+        }
+        else if (funcionarios == null || !funcionarios.Any())
+        {
+            <MudAlert Severity="Severity.Info" Variant="Variant.Filled" Class="my-4">
+                <MudText Typo="Typo.body1">
+                    <MudIcon Icon="@Icons.Material.Filled.Info" Class="mr-2" />
+                    Nenhum funcionário cadastrado ainda. Clique em "Novo Funcionário" para começar.
+                </MudText>
+            </MudAlert>
+        }
+        else
+        {
+            <MudCard Elevation="3">
+                <MudCardContent>
+                    <MudTextField @bind-Value="searchString" 
+                                  Placeholder="Buscar por nome, CPF ou cargo..." 
+                                  Adornment="Adornment.Start" 
+                                  AdornmentIcon="@Icons.Material.Filled.Search" 
+                                  IconSize="Size.Medium" 
+                                  Class="mb-4"
+                                  Immediate="true"
+                                  DebounceInterval="300">
+                    </MudTextField>
+
+                    <MudTable Items="@FilteredFuncionarios" 
+                              Hover="true" 
+                              Breakpoint="Breakpoint.Sm" 
+                              Loading="@loading"
+                              Dense="true"
+                              Striped="true"
+                              Elevation="0">
+                        <HeaderContent>
+                            <MudTh><MudTableSortLabel SortBy="new Func<Funcionario, object>(x => x.Nome)">Nome</MudTableSortLabel></MudTh>
+                            <MudTh><MudTableSortLabel SortBy="new Func<Funcionario, object>(x => x.Cargo ?? string.Empty)">Cargo</MudTableSortLabel></MudTh>
+                            <MudTh>CPF</MudTh>
+                            <MudTh>Propósito</MudTh>
+                            <MudTh>Natureza</MudTh>
+                            <MudTh>Status</MudTh>
+                            <MudTh Style="text-align: center;">Ações</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Nome">
+                                <MudText Typo="Typo.body2">
+                                    <strong>@context.Nome</strong>
+                                </MudText>
+                            </MudTd>
+                            <MudTd DataLabel="Cargo">@context.Cargo</MudTd>
+                            <MudTd DataLabel="CPF">
+                                <MudText Typo="Typo.body2">@context.CPF</MudText>
+                            </MudTd>
+                            <MudTd DataLabel="Propósito">
+                                <MudChip Size="Size.Small" Color="Color.Info" Variant="Variant.Filled">
+                                    @context.PropositoCadastro
+                                </MudChip>
+                            </MudTd>
+                            <MudTd DataLabel="Natureza">
+                                <MudChip Size="Size.Small" Color="Color.Secondary" Variant="Variant.Outlined">
+                                    @context.NaturezaAtividade.ToString()
+                                </MudChip>
+                            </MudTd>
+                            <MudTd DataLabel="Status">
+                                @if (context.Ativo)
+                                {
+                                    <MudChip Size="Size.Small" Color="Color.Success" Icon="@Icons.Material.Filled.CheckCircle">
+                                        Ativo
+                                    </MudChip>
+                                }
+                                else
+                                {
+                                    <MudChip Size="Size.Small" Color="Color.Default" Icon="@Icons.Material.Filled.Cancel">
+                                        Inativo
+                                    </MudChip>
+                                }
+                            </MudTd>
+                            <MudTd DataLabel="Ações" Style="text-align: center;">
+                                <MudTooltip Text="Editar">
+                                    <MudIconButton Icon="@Icons.Material.Filled.Edit" 
+                                                   Color="Color.Warning" 
+                                                   Size="Size.Small"
+                                                   Href="@($"/fornecedor/funcionarios/editar/{context.Id}")" />
+                                </MudTooltip>
+                                <MudTooltip Text="Excluir">
+                                    <MudIconButton Icon="@Icons.Material.Filled.Delete" 
+                                                   Color="Color.Error" 
+                                                   Size="Size.Small"
+                                                   OnClick="@(() => OpenDeleteDialog(context))" />
+                                </MudTooltip>
+                            </MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager PageSizeOptions="new int[] { 10, 25, 50, 100 }" 
+                                           InfoFormat="{first_item}-{last_item} de {all_items}" 
+                                           RowsPerPageString="Linhas por página:" />
+                        </PagerContent>
+                    </MudTable>
+                </MudCardContent>
+            </MudCard>
+
+            <MudPaper Elevation="0" Class="mt-4 pa-3">
+                <MudText Typo="Typo.body2" Color="Color.Secondary">
+                    <MudIcon Icon="@Icons.Material.Filled.Info" Size="Size.Small" Class="mr-1" />
+                    Total de funcionários: <strong>@funcionarios.Count</strong>
+                </MudText>
+            </MudPaper>
+        }
+    </MudPaper>
+</MudContainer>
 
 @code {
     private List<Funcionario> funcionarios = new();
     private bool loading = true;
     private Fornecedor? fornecedor;
+    private string searchString = string.Empty;
+
+    private IEnumerable<Funcionario> FilteredFuncionarios =>
+        funcionarios.Where(f =>
+            string.IsNullOrWhiteSpace(searchString) ||
+            f.Nome.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+            (f.CPF != null && f.CPF.Contains(searchString, StringComparison.OrdinalIgnoreCase)) ||
+            (f.Cargo != null && f.Cargo.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+        );
 
     protected override async Task OnInitializedAsync()
     {
@@ -117,6 +180,7 @@
         }
         catch (Exception ex)
         {
+            Snackbar.Add($"Erro ao carregar funcionários: {ex.Message}", Severity.Error);
             Console.WriteLine($"Erro ao carregar funcionários: {ex.Message}");
         }
         finally
@@ -125,27 +189,38 @@
         }
     }
 
-    private async Task DeleteFuncionario(int id)
+    private async Task OpenDeleteDialog(Funcionario funcionario)
     {
-        if (confirm($"Tem certeza que deseja excluir este funcionário?"))
+        var parameters = new DialogParameters
         {
-            try
-            {
-                await FuncionarioService.DeleteAsync(id);
-                funcionarios = funcionarios.Where(f => f.Id != id).ToList();
-                StateHasChanged();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Erro ao excluir funcionário: {ex.Message}");
-            }
+            ["ContentText"] = $"Tem certeza que deseja excluir o funcionário '{funcionario.Nome}'? Esta ação não pode ser desfeita.",
+            ["ButtonText"] = "Excluir",
+            ["Color"] = Color.Error
+        };
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small };
+        var dialog = await DialogService.ShowAsync<ConfirmDialog>("Confirmar Exclusão", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await DeleteFuncionario(funcionario.Id);
         }
     }
 
-    private bool confirm(string message)
+    private async Task DeleteFuncionario(int id)
     {
-        // Blazor Server não tem window.confirm nativo, então vamos simular
-        // Em produção, use um modal de confirmação
-        return true;
+        try
+        {
+            await FuncionarioService.DeleteAsync(id);
+            funcionarios = funcionarios.Where(f => f.Id != id).ToList();
+            Snackbar.Add("Funcionário excluído com sucesso!", Severity.Success);
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro ao excluir funcionário: {ex.Message}", Severity.Error);
+            Console.WriteLine($"Erro ao excluir funcionário: {ex.Message}");
+        }
     }
 }
