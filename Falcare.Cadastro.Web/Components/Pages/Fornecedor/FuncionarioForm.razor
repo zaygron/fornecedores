@@ -18,8 +18,8 @@
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-4 mb-8">
     <MudPaper Elevation="0" Class="pa-4">
-        <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-4">
-            <MudText Typo="Typo.h4" Color="Color.Primary">
+        <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-3">
+            <MudText Typo="Typo.h5" Color="Color.Primary">
                 <MudIcon Icon="@(Id == 0 ? Icons.Material.Filled.PersonAdd : Icons.Material.Filled.Edit)" Class="mr-2" />
                 @(Id == 0 ? "Novo Funcionário" : "Editar Funcionário")
             </MudText>
@@ -34,17 +34,17 @@
             <DataAnnotationsValidator />
             
             <!-- Seção: Informações de Cadastro -->
-            <MudCard Elevation="3" Class="mb-4">
+            <MudCard Elevation="2" Class="mb-3">
                 <MudCardHeader>
                     <CardHeaderContent>
-                        <MudText Typo="Typo.h6">
+                        <MudText Typo="Typo.subtitle1">
                             <MudIcon Icon="@Icons.Material.Filled.Info" Class="mr-2" />
                             Informações de Cadastro
                         </MudText>
                     </CardHeaderContent>
                 </MudCardHeader>
-                <MudCardContent>
-                    <MudGrid>
+                <MudCardContent Class="py-2">
+                    <MudGrid Spacing="2">
                         <MudItem xs="12" md="6">
                             <MudSelect T="string" 
                                        @bind-Value="propositoCadastro" 
@@ -85,17 +85,17 @@
             </MudCard>
 
             <!-- Seção: Responsável Legal -->
-            <MudCard Elevation="3" Class="mb-4">
+            <MudCard Elevation="2" Class="mb-3">
                 <MudCardHeader>
                     <CardHeaderContent>
-                        <MudText Typo="Typo.h6">
+                        <MudText Typo="Typo.subtitle1">
                             <MudIcon Icon="@Icons.Material.Filled.AccountCircle" Class="mr-2" />
                             Responsável Legal
                         </MudText>
                     </CardHeaderContent>
                 </MudCardHeader>
-                <MudCardContent>
-                    <MudGrid>
+                <MudCardContent Class="py-2">
+                    <MudGrid Spacing="2">
                         <MudItem xs="12" md="6">
                             <MudTextField T="string" 
                                           @bind-Value="model.NomeResponsavelLegal" 
@@ -120,17 +120,17 @@
             </MudCard>
 
             <!-- Seção: Dados Pessoais -->
-            <MudCard Elevation="3" Class="mb-4">
+            <MudCard Elevation="2" Class="mb-3">
                 <MudCardHeader>
                     <CardHeaderContent>
-                        <MudText Typo="Typo.h6">
+                        <MudText Typo="Typo.subtitle1">
                             <MudIcon Icon="@Icons.Material.Filled.Badge" Class="mr-2" />
                             Dados Pessoais do Funcionário
                         </MudText>
                     </CardHeaderContent>
                 </MudCardHeader>
-                <MudCardContent>
-                    <MudGrid>
+                <MudCardContent Class="py-2">
+                    <MudGrid Spacing="2">
                         <MudItem xs="12" md="6">
                             <MudTextField T="string" 
                                           @bind-Value="model.Nome" 
@@ -168,17 +168,17 @@
             </MudCard>
 
             <!-- Seção: Documentos de Identificação -->
-            <MudCard Elevation="3" Class="mb-4">
+            <MudCard Elevation="2" Class="mb-3">
                 <MudCardHeader>
                     <CardHeaderContent>
-                        <MudText Typo="Typo.h6">
+                        <MudText Typo="Typo.subtitle1">
                             <MudIcon Icon="@Icons.Material.Filled.Description" Class="mr-2" />
                             Documentos de Identificação
                         </MudText>
                     </CardHeaderContent>
                 </MudCardHeader>
-                <MudCardContent>
-                    <MudGrid>
+                <MudCardContent Class="py-2">
+                    <MudGrid Spacing="2">
                         <MudItem xs="12" md="6">
                             <MudTextField T="string" 
                                           @bind-Value="model.CTPS_NumeroSerie" 
@@ -253,16 +253,16 @@
             </MudCard>
 
             <!-- Seção: Conformidade e Segurança do Trabalho -->
-            <MudCard Elevation="3" Class="mb-4">
+            <MudCard Elevation="2" Class="mb-3">
                 <MudCardHeader>
                     <CardHeaderContent>
-                        <MudText Typo="Typo.h6">
+                        <MudText Typo="Typo.subtitle1">
                             <MudIcon Icon="@Icons.Material.Filled.Security" Class="mr-2" />
                             Conformidade e Segurança do Trabalho
                         </MudText>
                     </CardHeaderContent>
                 </MudCardHeader>
-                <MudCardContent>
+                <MudCardContent Class="py-2">
                     <MudStack Spacing="4">
                         <div>
                             <MudSwitch T="bool" 
