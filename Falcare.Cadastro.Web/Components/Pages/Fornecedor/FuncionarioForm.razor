@@ -31,7 +31,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Propósito do Cadastro</label>
-                                <select @bind="model.PropositoCadastro" class="form-select">
+                                <select @bind="propositoCadastro" class="form-select">
                                     <option value="">-- Selecione --</option>
                                     <option value="Integração">Integração</option>
                                     <option value="Outros">Outros</option>
@@ -49,7 +49,7 @@
                             </div>
                         </div>
 
-                        @if (model.NaturezaAtividade == "Outros")
+                        @if (model.NaturezaAtividade == NaturezaAtividade.Outros.ToString())
                         {
                             <div class="mb-3">
                                 <label class="form-label">Descreva Outras Atividades</label>
@@ -233,6 +233,7 @@
     private DateTime? cnhVencimento;
     private DateTime? asoVencimento;
     private Fornecedor? fornecedor;
+    private string propositoCadastro = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -282,14 +283,15 @@
     }
 
     private async Task Submit()
-    {
-        try
         {
-            model.DataNascimento = dataNascimento;
-            model.RG_DataVencimento = rgVencimento;
-            model.CPF_DataVencimento = cpfVencimento;
-            model.CNH_DataVencimento = cnhVencimento;
-            model.ASO_DataVencimento = asoVencimento;
+            try
+            {
+                model.PropositoCadastro = propositoCadastro;
+                model.DataNascimento = dataNascimento;
+                model.RG_DataVencimento = rgVencimento;
+                model.CPF_DataVencimento = cpfVencimento;
+                model.CNH_DataVencimento = cnhVencimento;
+                model.ASO_DataVencimento = asoVencimento;
 
             if (model.Id == 0)
             {
