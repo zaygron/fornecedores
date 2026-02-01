@@ -1,0 +1,151 @@
+@page "/fornecedor/funcionarios"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@using Falcare.Cadastro.Core.Entities
+@using Falcare.Cadastro.Core.Interfaces
+@attribute [Authorize]
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IFornecedorService FornecedorService
+@inject IFuncionarioService FuncionarioService
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<div class="container mt-4">
+    <div class="row mb-3">
+        <div class="col-md-8">
+            <h3>Funcionários Cadastrados</h3>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="/fornecedor/funcionarios/novo" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Novo Funcionário
+            </a>
+        </div>
+    </div>
+
+    @if (loading)
+    {
+        <div class="text-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Carregando...</span>
+            </div>
+        </div>
+    }
+    else if (funcionarios == null || !funcionarios.Any())
+    {
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> Nenhum funcionário cadastrado ainda.
+        </div>
+    }
+    else
+    {
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Cargo</th>
+                                <th>CPF</th>
+                                <th>Propósito</th>
+                                <th>Ativo</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var func in funcionarios)
+                            {
+                                <tr>
+                                    <td>@func.Nome</td>
+                                    <td>@func.Cargo</td>
+                                    <td>@func.CPF</td>
+                                    <td>@func.PropositoCadastro</td>
+                                    <td>
+                                        @if (func.Ativo)
+                                        {
+                                            <span class="badge bg-success">Ativo</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Inativo</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a href="/fornecedor/funcionarios/editar/@func.Id" class="btn btn-sm btn-warning me-1">
+                                            <i class="fas fa-edit"></i> Editar
+                                        </a>
+                                        <button @onclick="() => DeleteFuncionario(func.Id)" class="btn btn-sm btn-danger">
+                                            <i class="fas fa-trash"></i> Excluir
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private List<Funcionario> funcionarios = new();
+    private bool loading = true;
+    private Fornecedor? fornecedor;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if (user.Identity != null && user.Identity.IsAuthenticated)
+            {
+                var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    fornecedor = await FornecedorService.GetByUserIdAsync(userId);
+                    
+                    if (fornecedor != null)
+                    {
+                        funcionarios = (await FuncionarioService.GetByFornecedorIdAsync(fornecedor.Id)).ToList();
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao carregar funcionários: {ex.Message}");
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    private async Task DeleteFuncionario(int id)
+    {
+        if (confirm($"Tem certeza que deseja excluir este funcionário?"))
+        {
+            try
+            {
+                await FuncionarioService.DeleteAsync(id);
+                funcionarios = funcionarios.Where(f => f.Id != id).ToList();
+                StateHasChanged();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao excluir funcionário: {ex.Message}");
+            }
+        }
+    }
+
+    private bool confirm(string message)
+    {
+        // Blazor Server não tem window.confirm nativo, então vamos simular
+        // Em produção, use um modal de confirmação
+        return true;
+    }
+}
