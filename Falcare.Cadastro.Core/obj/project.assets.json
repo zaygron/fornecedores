@@ -1048,11 +1048,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "G:\\Engenha\\Programs\\Cadastro de Projetos\\Cadastro Fornecedores\\Falcare.Cadastro.Core\\Falcare.Cadastro.Core.csproj",
+      "projectUniqueName": "C:\\tmp\\cadforn\\fornecedores\\Falcare.Cadastro.Core\\Falcare.Cadastro.Core.csproj",
       "projectName": "Falcare.Cadastro.Core",
-      "projectPath": "G:\\Engenha\\Programs\\Cadastro de Projetos\\Cadastro Fornecedores\\Falcare.Cadastro.Core\\Falcare.Cadastro.Core.csproj",
+      "projectPath": "C:\\tmp\\cadforn\\fornecedores\\Falcare.Cadastro.Core\\Falcare.Cadastro.Core.csproj",
       "packagesPath": "C:\\Users\\Timoteo\\.nuget\\packages\\",
-      "outputPath": "G:\\Engenha\\Programs\\Cadastro de Projetos\\Cadastro Fornecedores\\Falcare.Cadastro.Core\\obj\\",
+      "outputPath": "C:\\tmp\\cadforn\\fornecedores\\Falcare.Cadastro.Core\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

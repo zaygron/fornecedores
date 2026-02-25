@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Falcare.Cadastro.Infra")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d5c3b135d88e2f88f1356c08f3898d626543ba4d")]
 [assembly: System.Reflection.AssemblyProductAttribute("Falcare.Cadastro.Infra")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Falcare.Cadastro.Infra")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

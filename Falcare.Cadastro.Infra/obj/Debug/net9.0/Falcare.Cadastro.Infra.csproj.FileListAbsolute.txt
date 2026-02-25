@@ -15,3 +15,21 @@ G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.
 G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\obj\Debug\net9.0\Falcare.Cadastro.Infra.pdb
 G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\obj\Debug\net9.0\Falcare.Cadastro.Infra.genruntimeconfig.cache
 G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Infra\obj\Debug\net9.0\ref\Falcare.Cadastro.Infra.dll
+C:\tmp\cadforn\fornecedores\Falcare.Cadastro.Infra\bin\Debug\net9.0\Falcare.Cadastro.Infra.deps.json
+C:\tmp\cadforn\fornecedores\Falcare.Cadastro.Infra\bin\Debug\net9.0\Falcare.Cadastro.Infra.runtimeconfig.json
+C:\tmp\cadforn\fornecedores\Falcare.Cadastro.Infra\bin\Debug\net9.0\Falcare.Cadastro.Infra.dll
+C:\tmp\cadforn\fornecedores\Falcare.Cadastro.Infra\bin\Debug\net9.0\Falcare.Cadastro.Infra.pdb
+C:\tmp\cadforn\fornecedores\Falcare.Cadastro.Infra\bin\Debug\net9.0\Falcare.Cadastro.Core.dll
+C:\tmp\cadforn\fornecedores\Falcare.Cadastro.Infra\bin\Debug\net9.0\Falcare.Cadastro.Core.pdb
+C:\tmp\cadforn\fornecedores\Falcare.Cadastro.Infra\obj\Debug\net9.0\Falcare.Cadastro.Infra.csproj.AssemblyReference.cache
+C:\tmp\cadforn\fornecedores\Falcare.Cadastro.Infra\obj\Debug\net9.0\Falcare.Cadastro.Infra.GeneratedMSBuildEditorConfig.editorconfig
+C:\tmp\cadforn\fornecedores\Falcare.Cadastro.Infra\obj\Debug\net9.0\Falcare.Cadastro.Infra.AssemblyInfoInputs.cache
+C:\tmp\cadforn\fornecedores\Falcare.Cadastro.Infra\obj\Debug\net9.0\Falcare.Cadastro.Infra.AssemblyInfo.cs
+C:\tmp\cadforn\fornecedores\Falcare.Cadastro.Infra\obj\Debug\net9.0\Falcare.Cadastro.Infra.csproj.CoreCompileInputs.cache
+C:\tmp\cadforn\fornecedores\Falcare.Cadastro.Infra\obj\Debug\net9.0\Falcare.Cadastro.Infra.sourcelink.json
+C:\tmp\cadforn\fornecedores\Falcare.Cadastro.Infra\obj\Debug\net9.0\Falcare..EF3EF5D1.Up2Date
+C:\tmp\cadforn\fornecedores\Falcare.Cadastro.Infra\obj\Debug\net9.0\Falcare.Cadastro.Infra.dll
+C:\tmp\cadforn\fornecedores\Falcare.Cadastro.Infra\obj\Debug\net9.0\refint\Falcare.Cadastro.Infra.dll
+C:\tmp\cadforn\fornecedores\Falcare.Cadastro.Infra\obj\Debug\net9.0\Falcare.Cadastro.Infra.pdb
+C:\tmp\cadforn\fornecedores\Falcare.Cadastro.Infra\obj\Debug\net9.0\Falcare.Cadastro.Infra.genruntimeconfig.cache
+C:\tmp\cadforn\fornecedores\Falcare.Cadastro.Infra\obj\Debug\net9.0\ref\Falcare.Cadastro.Infra.dll

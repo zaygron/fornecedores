@@ -20,101 +20,101 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Falcare.Cadastro.Web
 build_property.RootNamespace = Falcare.Cadastro.Web
-build_property.ProjectDir = G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Web\
+build_property.ProjectDir = C:\tmp\cadforn\fornecedores\Falcare.Cadastro.Web\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = G:\Engenha\Programs\Cadastro de Projetos\Cadastro Fornecedores\Falcare.Cadastro.Web
+build_property.MSBuildProjectDirectory = C:\tmp\cadforn\fornecedores\Falcare.Cadastro.Web
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[G:/Engenha/Programs/Cadastro de Projetos/Cadastro Fornecedores/Falcare.Cadastro.Web/Components/App.razor]
+[C:/tmp/cadforn/fornecedores/Falcare.Cadastro.Web/Components/App.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[G:/Engenha/Programs/Cadastro de Projetos/Cadastro Fornecedores/Falcare.Cadastro.Web/Components/Layout/SimpleLayout.razor]
+[C:/tmp/cadforn/fornecedores/Falcare.Cadastro.Web/Components/Layout/SimpleLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcU2ltcGxlTGF5b3V0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[G:/Engenha/Programs/Cadastro de Projetos/Cadastro Fornecedores/Falcare.Cadastro.Web/Components/Pages/Account/DefinirSenha.razor]
+[C:/tmp/cadforn/fornecedores/Falcare.Cadastro.Web/Components/Pages/Account/DefinirSenha.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBY2NvdW50XERlZmluaXJTZW5oYS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[G:/Engenha/Programs/Cadastro de Projetos/Cadastro Fornecedores/Falcare.Cadastro.Web/Components/Pages/Account/Login.razor]
+[C:/tmp/cadforn/fornecedores/Falcare.Cadastro.Web/Components/Pages/Account/Login.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBY2NvdW50XExvZ2luLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[G:/Engenha/Programs/Cadastro de Projetos/Cadastro Fornecedores/Falcare.Cadastro.Web/Components/Pages/Admin/AdminFuncionarioDocs.razor]
+[C:/tmp/cadforn/fornecedores/Falcare.Cadastro.Web/Components/Pages/Admin/AdminFuncionarioDocs.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxBZG1pbkZ1bmNpb25hcmlvRG9jcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[G:/Engenha/Programs/Cadastro de Projetos/Cadastro Fornecedores/Falcare.Cadastro.Web/Components/Pages/Admin/FornecedorDetalhes.razor]
+[C:/tmp/cadforn/fornecedores/Falcare.Cadastro.Web/Components/Pages/Admin/FornecedorDetalhes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxGb3JuZWNlZG9yRGV0YWxoZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[G:/Engenha/Programs/Cadastro de Projetos/Cadastro Fornecedores/Falcare.Cadastro.Web/Components/Pages/Admin/Fornecedores.razor]
+[C:/tmp/cadforn/fornecedores/Falcare.Cadastro.Web/Components/Pages/Admin/Fornecedores.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxGb3JuZWNlZG9yZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[G:/Engenha/Programs/Cadastro de Projetos/Cadastro Fornecedores/Falcare.Cadastro.Web/Components/Pages/Admin/SolicitarCadastro.razor]
+[C:/tmp/cadforn/fornecedores/Falcare.Cadastro.Web/Components/Pages/Admin/SolicitarCadastro.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxTb2xpY2l0YXJDYWRhc3Ryby5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[G:/Engenha/Programs/Cadastro de Projetos/Cadastro Fornecedores/Falcare.Cadastro.Web/Components/Pages/Counter.razor]
+[C:/tmp/cadforn/fornecedores/Falcare.Cadastro.Web/Components/Pages/Counter.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb3VudGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[G:/Engenha/Programs/Cadastro de Projetos/Cadastro Fornecedores/Falcare.Cadastro.Web/Components/Pages/Error.razor]
+[C:/tmp/cadforn/fornecedores/Falcare.Cadastro.Web/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[G:/Engenha/Programs/Cadastro de Projetos/Cadastro Fornecedores/Falcare.Cadastro.Web/Components/Pages/Fornecedor/DadosEmpresa.razor]
+[C:/tmp/cadforn/fornecedores/Falcare.Cadastro.Web/Components/Pages/Fornecedor/DadosEmpresa.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGb3JuZWNlZG9yXERhZG9zRW1wcmVzYS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[G:/Engenha/Programs/Cadastro de Projetos/Cadastro Fornecedores/Falcare.Cadastro.Web/Components/Pages/Fornecedor/Dashboard.razor]
+[C:/tmp/cadforn/fornecedores/Falcare.Cadastro.Web/Components/Pages/Fornecedor/Dashboard.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGb3JuZWNlZG9yXERhc2hib2FyZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[G:/Engenha/Programs/Cadastro de Projetos/Cadastro Fornecedores/Falcare.Cadastro.Web/Components/Pages/Fornecedor/FuncionarioDocumentos.razor]
+[C:/tmp/cadforn/fornecedores/Falcare.Cadastro.Web/Components/Pages/Fornecedor/FuncionarioDocumentos.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGb3JuZWNlZG9yXEZ1bmNpb25hcmlvRG9jdW1lbnRvcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[G:/Engenha/Programs/Cadastro de Projetos/Cadastro Fornecedores/Falcare.Cadastro.Web/Components/Pages/Fornecedor/FuncionarioForm.razor]
+[C:/tmp/cadforn/fornecedores/Falcare.Cadastro.Web/Components/Pages/Fornecedor/FuncionarioForm.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGb3JuZWNlZG9yXEZ1bmNpb25hcmlvRm9ybS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[G:/Engenha/Programs/Cadastro de Projetos/Cadastro Fornecedores/Falcare.Cadastro.Web/Components/Pages/Fornecedor/Funcionarios.razor]
+[C:/tmp/cadforn/fornecedores/Falcare.Cadastro.Web/Components/Pages/Fornecedor/Funcionarios.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGb3JuZWNlZG9yXEZ1bmNpb25hcmlvcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[G:/Engenha/Programs/Cadastro de Projetos/Cadastro Fornecedores/Falcare.Cadastro.Web/Components/Pages/Home.razor]
+[C:/tmp/cadforn/fornecedores/Falcare.Cadastro.Web/Components/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[G:/Engenha/Programs/Cadastro de Projetos/Cadastro Fornecedores/Falcare.Cadastro.Web/Components/Pages/Test.razor]
+[C:/tmp/cadforn/fornecedores/Falcare.Cadastro.Web/Components/Pages/Test.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUZXN0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[G:/Engenha/Programs/Cadastro de Projetos/Cadastro Fornecedores/Falcare.Cadastro.Web/Components/Pages/Weather.razor]
+[C:/tmp/cadforn/fornecedores/Falcare.Cadastro.Web/Components/Pages/Weather.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xXZWF0aGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[G:/Engenha/Programs/Cadastro de Projetos/Cadastro Fornecedores/Falcare.Cadastro.Web/Components/Routes.razor]
+[C:/tmp/cadforn/fornecedores/Falcare.Cadastro.Web/Components/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[G:/Engenha/Programs/Cadastro de Projetos/Cadastro Fornecedores/Falcare.Cadastro.Web/Components/_Imports.razor]
+[C:/tmp/cadforn/fornecedores/Falcare.Cadastro.Web/Components/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[G:/Engenha/Programs/Cadastro de Projetos/Cadastro Fornecedores/Falcare.Cadastro.Web/Components/Layout/MainLayout.razor]
+[C:/tmp/cadforn/fornecedores/Falcare.Cadastro.Web/Components/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-92iergderw
 
-[G:/Engenha/Programs/Cadastro de Projetos/Cadastro Fornecedores/Falcare.Cadastro.Web/Components/Layout/NavMenu.razor]
+[C:/tmp/cadforn/fornecedores/Falcare.Cadastro.Web/Components/Layout/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-km76o5lss6

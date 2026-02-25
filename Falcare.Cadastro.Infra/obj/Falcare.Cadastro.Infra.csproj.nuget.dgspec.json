@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "G:\\Engenha\\Programs\\Cadastro de Projetos\\Cadastro Fornecedores\\Falcare.Cadastro.Infra\\Falcare.Cadastro.Infra.csproj": {}
+    "C:\\tmp\\cadforn\\fornecedores\\Falcare.Cadastro.Infra\\Falcare.Cadastro.Infra.csproj": {}
   },
   "projects": {
-    "G:\\Engenha\\Programs\\Cadastro de Projetos\\Cadastro Fornecedores\\Falcare.Cadastro.Core\\Falcare.Cadastro.Core.csproj": {
+    "C:\\tmp\\cadforn\\fornecedores\\Falcare.Cadastro.Core\\Falcare.Cadastro.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\Engenha\\Programs\\Cadastro de Projetos\\Cadastro Fornecedores\\Falcare.Cadastro.Core\\Falcare.Cadastro.Core.csproj",
+        "projectUniqueName": "C:\\tmp\\cadforn\\fornecedores\\Falcare.Cadastro.Core\\Falcare.Cadastro.Core.csproj",
         "projectName": "Falcare.Cadastro.Core",
-        "projectPath": "G:\\Engenha\\Programs\\Cadastro de Projetos\\Cadastro Fornecedores\\Falcare.Cadastro.Core\\Falcare.Cadastro.Core.csproj",
+        "projectPath": "C:\\tmp\\cadforn\\fornecedores\\Falcare.Cadastro.Core\\Falcare.Cadastro.Core.csproj",
         "packagesPath": "C:\\Users\\Timoteo\\.nuget\\packages\\",
-        "outputPath": "G:\\Engenha\\Programs\\Cadastro de Projetos\\Cadastro Fornecedores\\Falcare.Cadastro.Core\\obj\\",
+        "outputPath": "C:\\tmp\\cadforn\\fornecedores\\Falcare.Cadastro.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -75,14 +75,14 @@
         }
       }
     },
-    "G:\\Engenha\\Programs\\Cadastro de Projetos\\Cadastro Fornecedores\\Falcare.Cadastro.Infra\\Falcare.Cadastro.Infra.csproj": {
+    "C:\\tmp\\cadforn\\fornecedores\\Falcare.Cadastro.Infra\\Falcare.Cadastro.Infra.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\Engenha\\Programs\\Cadastro de Projetos\\Cadastro Fornecedores\\Falcare.Cadastro.Infra\\Falcare.Cadastro.Infra.csproj",
+        "projectUniqueName": "C:\\tmp\\cadforn\\fornecedores\\Falcare.Cadastro.Infra\\Falcare.Cadastro.Infra.csproj",
         "projectName": "Falcare.Cadastro.Infra",
-        "projectPath": "G:\\Engenha\\Programs\\Cadastro de Projetos\\Cadastro Fornecedores\\Falcare.Cadastro.Infra\\Falcare.Cadastro.Infra.csproj",
+        "projectPath": "C:\\tmp\\cadforn\\fornecedores\\Falcare.Cadastro.Infra\\Falcare.Cadastro.Infra.csproj",
         "packagesPath": "C:\\Users\\Timoteo\\.nuget\\packages\\",
-        "outputPath": "G:\\Engenha\\Programs\\Cadastro de Projetos\\Cadastro Fornecedores\\Falcare.Cadastro.Infra\\obj\\",
+        "outputPath": "C:\\tmp\\cadforn\\fornecedores\\Falcare.Cadastro.Infra\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -103,8 +103,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "G:\\Engenha\\Programs\\Cadastro de Projetos\\Cadastro Fornecedores\\Falcare.Cadastro.Core\\Falcare.Cadastro.Core.csproj": {
-                "projectPath": "G:\\Engenha\\Programs\\Cadastro de Projetos\\Cadastro Fornecedores\\Falcare.Cadastro.Core\\Falcare.Cadastro.Core.csproj"
+              "C:\\tmp\\cadforn\\fornecedores\\Falcare.Cadastro.Core\\Falcare.Cadastro.Core.csproj": {
+                "projectPath": "C:\\tmp\\cadforn\\fornecedores\\Falcare.Cadastro.Core\\Falcare.Cadastro.Core.csproj"
               }
             }
           }
@@ -130,6 +130,10 @@
               "version": "[9.0.0, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
               "version": "[9.0.0, )"
             }

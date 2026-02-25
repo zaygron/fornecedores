@@ -1,0 +1,24 @@
+# Binaries
+[Bb]in/
+[Oo]bj/
+*.dll
+*.pdb
+
+# Databases
+*.db
+*.db-shm
+*.db-wal
+
+# Build scripts/logs
+build_*.txt
+current_fail.txt
+
+# Uploads and temporary files
+wwwroot/uploads/
+invite.txt
+
+# IDE
+.vs/
+*.user
+*.suo
+*.sln.docstates
